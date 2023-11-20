@@ -1,7 +1,7 @@
 name: observer_auth
-description: A new Flutter package project.
-version: 0.0.1
-homepage:
+description: Package d'authentification à mon Keycloak via une API intermédiaire.
+version: 0.1.0
+homepage: https://github.com/samakunchan/observer_auth
 
 environment:
   sdk: '>=3.1.5 <4.0.0'
@@ -10,12 +10,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_appauth: ^6.0.2
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-
+  very_good_analysis: ^5.0.0+1
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
