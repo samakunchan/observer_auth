@@ -1,39 +1,73 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Le but de cette librairie est de gérer l'authentification OIDC en donnant un fichier de configuration. <br>
+La librairie fournis un bouton qui est censer gérer tout le process.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Pour l'installation depuis le projet en local :
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  #...  
+  observer_core:
+    path: ../observer_auth/
+```
+
+Si le versionning est fais jusqu'au bout sur github.
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  #...  
+  git:
+    name: observer_auth
+    url: https://{token_de_github}@github.com/samakunchan/observer_auth.git
+    ref: x.x.x # Numéro de version
+```
+
+```shell
+flutter pub get
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Une fois cette librairie installée dans l'application, il faudra configurer le gradle et le Plist afin de mettre un `scheme`.<br>
+Qu'est-ce qu'un `scheme` ? C'est le nom de l'application et il permet de faire une redirection vers le téléphone.<br>
+On peut en mettre plusieurs, mais un seul suffit.
+```
+# android/app/build.gradle
+android {
+    ...
+    defaultConfig {
+        ...
+        manifestPlaceholders += [
+                'appAuthRedirectScheme': '<your_custom_scheme>'
+                'appAuthRedirectScheme': '<your_custom_scheme1>'
+        ]
+    }
+}
+```
 
-```dart
-const like = 'sample';
+```
+# macos/Runner/Info.plist
+# ios/Runner/Info.plist
+
+<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string><your_custom_scheme></string>
+            <string><your_custom_scheme2></string>
+        </array>
+    </dict>
+</array>
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+Pas d'information supplémentaire.
