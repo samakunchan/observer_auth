@@ -1,6 +1,9 @@
 /// CORE EXPORT
 library;
 
+/// PACKAGE FLUTTER APPAUTH
+export 'package:flutter_appauth/flutter_appauth.dart';
+
 /// DTO
 /// AUTH TYPE
 export 'dtos/keycloak_auth_type_dto.dart';
