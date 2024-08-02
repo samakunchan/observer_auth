@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:observer_auth/library_observer_auth.dart';
 
@@ -23,7 +25,7 @@ class KeycloakRepository {
       );
 
       return result;
-    } catch (e) {
+    } catch (error) {
       KeycloakAuthTypeDTO.isBusy = false;
     }
     return null;
@@ -38,17 +40,18 @@ class KeycloakRepository {
     return keycloakAuthTypeDTO;
   }
 
-  Future<TokenResponse?> exchangeCode({
+  Future<Either<String, TokenResponse>> exchangeCode({
     required KeycloakAuthTypeDTO keycloakAuthTypeDTO,
     required KeycloakConfDTO keycloakConfDTO,
     bool isDevMode = false,
   }) async {
     try {
       KeycloakAuthTypeDTO.isBusy = true;
-      final Uri uri = isDevMode
-          ? Uri.parse('${keycloakConfDTO.issuer}/authentication/credentials/')
-          : Uri.parse('https://localhost:3005/authentication/credentials/');
+      final Uri uri = !isDevMode
+          ? Uri.parse('${keycloakConfDTO.issuer}/authentication/credentials')
+          : Uri.parse('http://localhost:3005/authentication/credentials');
 
+      /// On envoie les infos vers l'API
       final http.Response httpResponse = await http.post(
         uri,
         body: jsonEncode(<String, dynamic>{
@@ -61,6 +64,8 @@ class KeycloakRepository {
           'Access-Control-Allow-Origin': '*',
         },
       );
+
+      /// On récupère la réponse de l'API
       final Map<String, dynamic> json = jsonDecode(httpResponse.body) as Map<String, dynamic>;
       final DateTime now = DateTime.now();
       final DateTime future = now.add(Duration(seconds: json['expires_in'] as int));
@@ -73,10 +78,18 @@ class KeycloakRepository {
         (json['scope'] as String).split(' '),
         <String, dynamic>{},
       );
-      return result;
-    } catch (e) {
+
+      return Right(result);
+    } on PlatformException catch (error) {
       KeycloakAuthTypeDTO.isBusy = false;
+      return Left(error.toString());
+    } on HandshakeException catch (error) {
+      KeycloakAuthTypeDTO.isBusy = false;
+      return Left('On a une érreur de type Handshake : ${error.toString()}. Possibilité de résolution :'
+          ' Vous utilisez un localhost pour faire la requête et celui-ci est en https au lieu de http.');
+    } catch (error) {
+      KeycloakAuthTypeDTO.isBusy = false;
+      return Left('On a pas pu générer les tokens avec le code. Message : $error');
     }
-    return null;
   }
 }
