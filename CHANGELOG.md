@@ -1,6 +1,19 @@
 # OBSERVER AUTH
 
-## 🚀 0.2.0 - 30/11/2023
+## 🚀 0.3.0 - 02/08/2024
+### Nouveautés
+
+- Installation de logger et dartz pour une meilleur gestion des erreurs.
+
+### Changements
+
+- Gestion des errreurs PlatformException, HandshakeException dans le repository.
+
+### Correctifs
+
+- Fixe dans dans le Changelog.
+
+## 🚀 0.2.0 - 30/07/2024
 ### Nouveautés
 
 - Ajout de tout les DTO et installation de Freezed pour la génération de code des DTO.
