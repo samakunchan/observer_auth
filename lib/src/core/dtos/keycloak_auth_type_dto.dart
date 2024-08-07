@@ -16,9 +16,3 @@ class KeycloakAuthTypeDTO with _$KeycloakAuthTypeDTO {
 
   static KeycloakAuthTypeDTO empty = const KeycloakAuthTypeDTO();
 }
-// final String _clientId = 'papangue';
-// final String _redirectUrl = 'com.samakunchan.observerauth:/';
-// final String _issuer = 'https://secure-connect.devpapangue.com';
-// final String _discoveryUrl = 'https://secure-connect.devpapangue.com/realms/ppg-connect/.well-known/openid-configuration';
-// final String _postLogoutRedirectUrl = 'com.samakunchan.observerauth:/';
-// final List<String> _scopes = <String>['openid', 'profile', 'email', 'siren', 'offline_access'];

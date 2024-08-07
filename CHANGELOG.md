@@ -7,7 +7,7 @@
 
 ### Changements
 
-- Gestion des errreurs PlatformException, HandshakeException dans le repository.
+- Gestion des erreurs PlatformException, HandshakeException dans le repository.
 
 ### Correctifs
 
