@@ -6,6 +6,9 @@ class ObserverAuthButton extends StatefulWidget {
     required this.keycloakConfDTO,
     required this.onSuccess,
     required this.onFailure,
+    required this.onUserInfosDetected,
+    super.key,
+    this.isDevMode = false,
   });
 
   /// [Input]:
@@ -43,6 +46,25 @@ class ObserverAuthButton extends StatefulWidget {
   final ValueChanged<TokenResponse> onSuccess;
   final ValueChanged<String> onFailure;
 
+  /// [UserInfosDTO]:
+  /// ```json
+  /// {
+  ///     "sub": "string",
+  ///     "siren": "string",
+  ///     "email_verified": boolean,
+  ///     "name": "string",
+  ///     "preferred_username": "string",
+  ///     "locale": "string",
+  ///     "given_name": "string",
+  ///     "family_name": "string",
+  ///     "email": "string"
+  /// }
+  /// ```
+  final ValueChanged<UserInfosDTO> onUserInfosDetected;
+
+  /// Pour passer de l'API local à l'API en ligne.
+  final bool isDevMode;
+
   @override
   State<ObserverAuthButton> createState() => _ObserverAuthButtonState();
 }
@@ -70,10 +92,21 @@ class _ObserverAuthButtonState extends State<ObserverAuthButton> {
           keycloakConfDTO: widget.keycloakConfDTO,
           isDevMode: widget.isDevMode,
         );
+        final userInfos = await observerAuthService.getUserInfos(
+          keycloakAuthTypeDTO: keycloakAuthTypeDTO,
+          keycloakConfDTO: widget.keycloakConfDTO,
+          isDevMode: widget.isDevMode,
+        );
+
         setState(() {
           datas.fold(
             (String error) => widget.onFailure(error),
             (TokenResponse response) => widget.onSuccess(response),
+          );
+
+          userInfos.fold(
+            (String error) => widget.onFailure(error),
+            (UserInfosDTO userInfos) => widget.onUserInfosDetected(userInfos),
           );
         });
       },
