@@ -17,6 +17,9 @@ export 'dtos/keycloak_conf_dto.dart';
 export 'dtos/keycloak_token_dto.dart';
 
 /// DTO
+/// USER INFOS
+export 'dtos/user_infos_dto.dart';
+
 /// REPOSITORIES
 /// KEYCLOAK
 export 'repositories/keycloak_repository.dart';
