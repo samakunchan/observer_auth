@@ -92,4 +92,54 @@ class KeycloakRepository {
       return Left('On a pas pu générer les tokens avec le code. Message : $error');
     }
   }
+
+  Future<Either<String, TokenResponse>> refreshToken({
+    required String refreshToken,
+    bool isDevMode = false,
+  }) async {
+    KeycloakAuthTypeDTO.isBusy = true;
+    final Uri uri = !isDevMode
+        ? Uri.parse('${keycloakConfDTO.issuer}/authentication/credentials')
+        : Uri.parse('http://localhost:3005/authentication/credentials');
+
+    try {
+      /// On envoie les infos vers l'API
+      final http.Response httpResponse = await http.post(
+        uri,
+        body: jsonEncode(<String, dynamic>{
+          'refresh_token': refreshToken,
+        }),
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Access-Control-Allow-Origin': '*',
+        },
+      );
+
+      /// On récupère la réponse de l'API
+      final Map<String, dynamic> json = jsonDecode(httpResponse.body) as Map<String, dynamic>;
+      final DateTime now = DateTime.now();
+      final DateTime future = now.add(Duration(seconds: json['expires_in'] as int));
+      final TokenResponse result = TokenResponse(
+        json['access_token'] as String,
+        json['refresh_token'] as String,
+        future,
+        json['id_token'] as String,
+        json['token_type'] as String,
+        (json['scope'] as String).split(' '),
+        <String, dynamic>{},
+      );
+
+      return Right(result);
+    } on PlatformException catch (error) {
+      KeycloakAuthTypeDTO.isBusy = false;
+      return Left(error.toString());
+    } on HandshakeException catch (error) {
+      KeycloakAuthTypeDTO.isBusy = false;
+      return Left('On a une érreur de type Handshake : ${error.toString()}. Possibilité de résolution :'
+          ' Vous utilisez un localhost pour faire la requête et celui-ci est en https au lieu de http.');
+    } catch (error) {
+      KeycloakAuthTypeDTO.isBusy = false;
+      return Left('On a pas pu générer les tokens avec le code. Message : $error');
+    }
+  }
 }

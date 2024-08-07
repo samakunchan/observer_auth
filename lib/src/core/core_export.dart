@@ -18,4 +18,9 @@ export 'dtos/keycloak_token_dto.dart';
 
 /// DTO
 /// REPOSITORIES
+/// KEYCLOAK
 export 'repositories/keycloak_repository.dart';
+
+/// SERVICES
+/// AUTH
+export 'services/observer_auth_service.dart';
