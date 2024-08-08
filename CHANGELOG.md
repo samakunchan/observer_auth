@@ -1,5 +1,19 @@
 # OBSERVER AUTH
 
+## 🚀 0.5.0 - 08/08/2024
+### Nouveautés
+
+- Ajout d'un workflow pour test si mon tag existe déjà afin d'eviter les oublies d'incrémentation de version.
+- Ajout d'un workflow our les tests sur les features et dev (test pas encore écris).
+
+### Changements
+
+- Pas de changements.
+
+### Correctifs
+
+- Pas de fixes.
+
 ## 🚀 0.4.0 - 08/08/2024
 ### Nouveautés
 
