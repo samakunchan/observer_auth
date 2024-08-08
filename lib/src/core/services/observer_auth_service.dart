@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:observer_auth/library_observer_auth.dart';
 import 'package:observer_auth/src/core/core_export.dart';
-import 'package:observer_auth/src/core/utils.dart';
+import 'package:observer_auth/src/core/repositories/base_repository.dart';
 
 class ObserverAuthService {
   ObserverAuthService({required KeycloakRepository keycloakRepository}) : _keycloakRepository = keycloakRepository;
@@ -16,9 +16,13 @@ class ObserverAuthService {
   ///     "authorization_code": "string"
   /// }
   /// ```
-  Future<KeycloakAuthTypeDTO> getTokenWithCode({required KeycloakConfDTO keycloakConfDTO}) async {
-    final AuthorizationResponse response = await _keycloakRepository.signIn() ?? const AuthorizationResponse();
-    return _keycloakRepository.processAuthResponse(response);
+  Future<Either<ObserverAuthFailure, KeycloakAuthTypeDTO>> getTokenWithCode({required KeycloakConfDTO keycloakConfDTO}) async {
+    return BaseRepository.makeRequest(
+      () async {
+        final AuthorizationResponse response = await _keycloakRepository.signIn() ?? const AuthorizationResponse();
+        return _keycloakRepository.processAuthResponse(response);
+      },
+    );
   }
 
   /// [Entree]:
@@ -42,15 +46,17 @@ class ObserverAuthService {
   ///     "scope": "string"
   /// }
   /// ```
-  Future<Either<String, TokenResponse>> exchangeCode({
+  Future<Either<ObserverAuthFailure, TokenResponse>> exchangeCode({
     required KeycloakConfDTO keycloakConfDTO,
     required KeycloakAuthTypeDTO keycloakAuthTypeDTO,
     required bool isDevMode,
   }) async {
-    return _keycloakRepository.exchangeCode(
-      keycloakAuthTypeDTO: keycloakAuthTypeDTO,
-      keycloakConfDTO: keycloakConfDTO,
-      isDevMode: isDevMode,
+    return BaseRepository.makeRequest(
+      () => _keycloakRepository.exchangeCode(
+        keycloakAuthTypeDTO: keycloakAuthTypeDTO,
+        keycloakConfDTO: keycloakConfDTO,
+        isDevMode: isDevMode,
+      ),
     );
   }
 
@@ -69,26 +75,27 @@ class ObserverAuthService {
   ///     "email": "string"
   /// }
   /// ```
-  Future<Either<String, UserInfosDTO>> getUserInfos({
+  Future<Either<ObserverAuthFailure, UserInfosDTO>> getUserInfos({
     required KeycloakConfDTO keycloakConfDTO,
-    required KeycloakAuthTypeDTO keycloakAuthTypeDTO,
+    required String accessToken,
     required bool isDevMode,
   }) async {
-    return _keycloakRepository.getUserInfos(
-      keycloakAuthTypeDTO: keycloakAuthTypeDTO,
-      keycloakConfDTO: keycloakConfDTO,
-      isDevMode: isDevMode,
+    return await BaseRepository.makeRequest(
+      () => _keycloakRepository.getUserInfos(
+        keycloakConfDTO: keycloakConfDTO,
+        accessToken: accessToken,
+        isDevMode: isDevMode,
+      ),
     );
   }
 }
 
 Future<void> refreshToken({
   required String refreshToken,
-  bool isDevMode = false,
-  required ValueChanged<String> onFailure,
+  required ValueChanged<ObserverAuthFailure> onFailure,
   required ValueChanged<TokenResponse> onSuccess,
+  bool isDevMode = false,
 }) async {
-  logger.t('Nous sommes dans la méthode refreshtoken de la lib');
   final KeycloakRepository keycloakRepository = KeycloakRepository(
     keycloakConfDTO: KeycloakConfDTO.fromJson(
       <String, dynamic>{
@@ -98,15 +105,16 @@ Future<void> refreshToken({
     ),
   );
 
-  logger.t('La config est ok. On lance la requete.');
-  final Either<String, TokenResponse> datas = await keycloakRepository.refreshToken(
-    refreshToken: refreshToken,
-    isDevMode: isDevMode,
+  final request = await BaseRepository.makeRequest(
+    () async {
+      return keycloakRepository.refreshToken(
+        refreshToken: refreshToken,
+        isDevMode: isDevMode,
+      );
+    },
   );
-  logger.t('Requete OK. Voici les données $datas');
-
-  datas.fold(
-    (String error) => onFailure(error),
+  request.fold(
+    (ObserverAuthFailure failure) => onFailure(failure),
     (TokenResponse response) => onSuccess(response),
   );
 }
