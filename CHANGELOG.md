@@ -1,5 +1,22 @@
 # OBSERVER AUTH
 
+## 🚀 0.4.0 - 08/08/2024
+### Nouveautés
+
+- Ajout de la gestion du refresh token.
+- Création des classes personalisées `ObserverAuthFailure` et `ObserverAuthException` pour mieux comprendre les érreurs reçus.
+- Création des DTOS `UserInfos` et `ErrorAuthDTO`.
+- Ajout d'un nouveau callback pour envoyer les infos utilisateurs au front.
+
+### Changements
+
+- Refacto de l'observer auth service afin d'utiliser une méthode qui gère à elle seule tout les érreurs.
+- Documentation des propriétés.
+
+### Correctifs
+
+- Fix oublie du versionning dans le Readme.
+
 ## 🚀 0.3.0 - 02/08/2024
 ### Nouveautés
 
