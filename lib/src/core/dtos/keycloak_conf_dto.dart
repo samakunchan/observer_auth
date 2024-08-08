@@ -3,6 +3,20 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'keycloak_conf_dto.freezed.dart';
 part 'keycloak_conf_dto.g.dart';
 
+/// ```json
+/// {
+///   "client_id" : "string",     // Requis.
+///   "redirect_uri" : "string",  // Requis.
+///   "scopes" : ["string"],      // Requis.
+///   "discovery_url" : "string", // Par défaut "secure-connect".
+///   "issuer" : "string",        // Par défaut "secure-connect".
+///   "code_verifier" : "string",
+///   "authorization_code" : "string",
+///   "refresh_token" : "string",
+///   "access_token" : "string",
+///   "id_token" : "string",
+/// }
+/// ```
 @freezed
 class KeycloakConfDTO with _$KeycloakConfDTO {
   const factory KeycloakConfDTO({
@@ -30,9 +44,3 @@ class KeycloakConfDTO with _$KeycloakConfDTO {
     scopes: [],
   );
 }
-// final String _clientId = 'papangue';
-// final String _redirectUrl = 'com.samakunchan.observerauth:/';
-// final String _issuer = 'https://secure-connect.devpapangue.com';
-// final String _discoveryUrl = 'https://secure-connect.devpapangue.com/realms/ppg-connect/.well-known/openid-configuration';
-// final String _postLogoutRedirectUrl = 'com.samakunchan.observerauth:/';
-// final List<String> _scopes = <String>['openid', 'profile', 'email', 'siren', 'offline_access'];
