@@ -11,6 +11,19 @@
 
 ### Correctifs
 
+- Fix: Nom du tag. `observer_auth_vXXX` au lieu de `observer_core_vXXX`
+
+## 🚀 0.5.1 - 08/08/2024
+### Nouveautés
+
+- Pas de nouveautés
+
+### Changements
+
+- Pas de changements.
+
+### Correctifs
+
 - Fix: Création de tag qui ne se faisait pas. Ne pas oublier de passer la permission en "Read and Write" dans le menu "Github action" sur Github.
 
 ## 🚀 0.5.0 - 08/08/2024

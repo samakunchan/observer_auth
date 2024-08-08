@@ -28,5 +28,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ env.APP_VERSION }}
-          name: observer_core_v${{ env.APP_VERSION }}
+          name: observer_auth_v${{ env.APP_VERSION }}
           body: ${{ steps.tag_version.outputs.changelog }}
