@@ -1,25 +1,29 @@
 on:
-  pull_request:
+  push:
     branches:
       - main
 
-name: 🚚 [PR MAIN] Workflow pour le lancement des tests sur Observer Auth
+name: 📎 [MERGE] Création automatique d'un tag.
 jobs:
-  observer_platform_macos:
-    name: 🛂 Librairie d'authentification avec Keycloak
-    runs-on: ubuntu-latest
+  create-tags:
+    #    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-      - run: echo "🎉 Bravo 🎉. Le job se lance sur l'évènement ${{ github.event_name }}."
-      - run: echo "Le nom de la branche est ${{ github.ref }} et le nom du repository est ${{ github.repository }}."
+      - uses: actions/checkout@v3
 
-      - name: Clone repository
-        uses: actions/checkout@v4
+      - name: Get version from pubspec.yaml
+        id: version
+        run: |
+          $version = (Get-Content pubspec.yaml | Select-String 'version:[^^]*' | ForEach-Object { $_.ToString().Split(":")[1].Trim() })
+          echo "APP_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        id: flutter-action
+      - name: Use the value
+        run: |
+          echo "${{ env.APP_VERSION }}"
+
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
         with:
-          architecture: x64
-      - run: |
-          git config --global --add safe.directory /opt/hostedtoolcache/flutter/${{ steps.flutter-action.outputs.CHANNEL }}-${{ steps.flutter-action.outputs.VERSION }}-${{ steps.flutter-action.outputs.ARCHITECTURE }}
-          flutter --version
+          tag: ${{ env.APP_VERSION }}
+          name: observer_core_v${{ env.APP_VERSION }}
+          body: ${{ steps.tag_version.outputs.changelog }}
