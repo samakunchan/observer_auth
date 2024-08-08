@@ -1,5 +1,18 @@
 # OBSERVER AUTH
 
+## 🚀 0.5.1 - 08/08/2024
+### Nouveautés
+
+- Pas de nouveautés
+
+### Changements
+
+- Pas de changements.
+
+### Correctifs
+
+- Fix: Création de tag qui ne se faisait pas. Ne pas oublier de passer la permission en "Read and Write" dans le menu "Github action" sur Github.
+
 ## 🚀 0.5.0 - 08/08/2024
 ### Nouveautés
 
@@ -64,13 +77,30 @@
 ## 🚀 0.1.0 - 20/11/2023
 ### Nouveautés
 
-- Installation du projet
-- Ajout de la documentation
+- Installation du projet.
+- Ajout de la documentation.
 
 ### Changements
 
-- Pas de changements
+- Pas de changements.
 
 ### Correctifs
 
 - Pas de fixes
+
+
+
+## 🚀 0.3.0 - 08/08/2024
+### Nouveautés
+
+- Ajout de la fonctionnalité pour lire et sauvegarder les tokens.
+- Ajout de la fonctionnalité pour lire et sauvegarder les infos utilisateur.
+
+### Changements
+
+- Suppression de la variable `access_token` pour la remplacer avec l'instance sauvegarder en local storage dans toutes les requêtes HTTP.
+- Renommage des Abstractions pour plus de clarté.
+
+### Correctifs
+
+- Fix: Bug de retrofit
