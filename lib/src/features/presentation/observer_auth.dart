@@ -44,7 +44,7 @@ class ObserverAuthButton extends StatefulWidget {
   /// }
   /// ```
   final ValueChanged<TokenResponse> onSuccess;
-  final ValueChanged<String> onFailure;
+  final ValueChanged<ObserverAuthFailure> onFailure;
 
   /// [UserInfosDTO]:
   /// ```json
@@ -84,31 +84,36 @@ class _ObserverAuthButtonState extends State<ObserverAuthButton> {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () async {
-        final KeycloakAuthTypeDTO keycloakAuthTypeDTO = await observerAuthService.getTokenWithCode(
+        final keycloakAuthTypeDTO = await observerAuthService.getTokenWithCode(
           keycloakConfDTO: widget.keycloakConfDTO,
         );
-        final datas = await observerAuthService.exchangeCode(
-          keycloakAuthTypeDTO: keycloakAuthTypeDTO,
-          keycloakConfDTO: widget.keycloakConfDTO,
-          isDevMode: widget.isDevMode,
-        );
-        final userInfos = await observerAuthService.getUserInfos(
-          keycloakAuthTypeDTO: keycloakAuthTypeDTO,
-          keycloakConfDTO: widget.keycloakConfDTO,
-          isDevMode: widget.isDevMode,
-        );
+        keycloakAuthTypeDTO.fold(
+          (ObserverAuthFailure failure) => widget.onFailure(failure),
+          (KeycloakAuthTypeDTO response) async {
+            final datas = await observerAuthService.exchangeCode(
+              keycloakAuthTypeDTO: response,
+              keycloakConfDTO: widget.keycloakConfDTO,
+              isDevMode: widget.isDevMode,
+            );
 
-        setState(() {
-          datas.fold(
-            (String error) => widget.onFailure(error),
-            (TokenResponse response) => widget.onSuccess(response),
-          );
+            datas.fold(
+              (ObserverAuthFailure failure) => widget.onFailure(failure),
+              (TokenResponse response) async {
+                final userInfos = await observerAuthService.getUserInfos(
+                  keycloakConfDTO: widget.keycloakConfDTO,
+                  accessToken: response.accessToken ?? 'no access token',
+                  isDevMode: widget.isDevMode,
+                );
+                userInfos.fold(
+                  (ObserverAuthFailure failure) => widget.onFailure(failure),
+                  (UserInfosDTO userInfos) => widget.onUserInfosDetected(userInfos),
+                );
 
-          userInfos.fold(
-            (String error) => widget.onFailure(error),
-            (UserInfosDTO userInfos) => widget.onUserInfosDetected(userInfos),
-          );
-        });
+                return widget.onSuccess(response);
+              },
+            );
+          },
+        );
       },
       icon: const Icon(Icons.login),
     );
