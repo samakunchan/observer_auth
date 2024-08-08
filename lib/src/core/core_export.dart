@@ -6,6 +6,10 @@ export 'package:flutter_appauth/flutter_appauth.dart';
 
 /// DTO
 /// AUTH TYPE
+export 'dtos/error_auth_dto.dart';
+
+/// DTO
+/// AUTH TYPE
 export 'dtos/keycloak_auth_type_dto.dart';
 
 /// DTO
@@ -19,6 +23,14 @@ export 'dtos/keycloak_token_dto.dart';
 /// DTO
 /// USER INFOS
 export 'dtos/user_infos_dto.dart';
+
+/// EXCEPTIONS
+/// EXCEPTION
+export 'errors/exception.dart';
+
+/// EXCEPTIONS
+/// EXCEPTION
+export 'errors/failures.dart';
 
 /// REPOSITORIES
 /// KEYCLOAK
