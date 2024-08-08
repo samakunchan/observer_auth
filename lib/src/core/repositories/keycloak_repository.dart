@@ -1,11 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:dartz/dartz.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:observer_auth/library_observer_auth.dart';
-import 'package:observer_auth/src/core/dtos/user_infos_dto.dart';
 
 class KeycloakRepository {
   const KeycloakRepository({required this.keycloakConfDTO});
@@ -28,8 +24,8 @@ class KeycloakRepository {
       return result;
     } catch (error) {
       KeycloakAuthTypeDTO.isBusy = false;
+      throw SignInException(message: "Une érreur est survenue lors du processus d'authentification.");
     }
-    return null;
   }
 
   KeycloakAuthTypeDTO processAuthResponse(AuthorizationResponse response) {
@@ -41,7 +37,7 @@ class KeycloakRepository {
     return keycloakAuthTypeDTO;
   }
 
-  Future<Either<String, TokenResponse>> exchangeCode({
+  Future<TokenResponse> exchangeCode({
     required KeycloakAuthTypeDTO keycloakAuthTypeDTO,
     required KeycloakConfDTO keycloakConfDTO,
     bool isDevMode = false,
@@ -80,21 +76,14 @@ class KeycloakRepository {
         <String, dynamic>{},
       );
 
-      return Right(result);
-    } on PlatformException catch (error) {
-      KeycloakAuthTypeDTO.isBusy = false;
-      return Left(error.toString());
-    } on HandshakeException catch (error) {
-      KeycloakAuthTypeDTO.isBusy = false;
-      return Left('On a une érreur de type Handshake : ${error.toString()}. Possibilité de résolution :'
-          ' Vous utilisez un localhost pour faire la requête et celui-ci est en https au lieu de http.');
+      return result;
     } catch (error) {
       KeycloakAuthTypeDTO.isBusy = false;
-      return Left('On a pas pu générer les tokens avec le code. Message : $error');
+      return throw ExchangeCodeException(message: 'On a pas pu générer les tokens avec le code. Message : $error');
     }
   }
 
-  Future<Either<String, TokenResponse>> refreshToken({
+  Future<TokenResponse> refreshToken({
     required String refreshToken,
     bool isDevMode = false,
   }) async {
@@ -115,9 +104,15 @@ class KeycloakRepository {
           'Access-Control-Allow-Origin': '*',
         },
       );
+      final Map<String, dynamic> json = jsonDecode(httpResponse.body) as Map<String, dynamic>;
+      if (json.containsKey('errorName')) {
+        final ErrorAuthDTO errorAuthDTO = ErrorAuthDTO.fromJson(json);
+        if (errorAuthDTO.description.contains('Offline user session not found')) {
+          throw UserInfosRevokedException();
+        }
+      }
 
       /// On récupère la réponse de l'API
-      final Map<String, dynamic> json = jsonDecode(httpResponse.body) as Map<String, dynamic>;
       final DateTime now = DateTime.now();
       final DateTime future = now.add(Duration(seconds: json['expires_in'] as int));
       final TokenResponse result = TokenResponse(
@@ -130,23 +125,19 @@ class KeycloakRepository {
         <String, dynamic>{},
       );
 
-      return Right(result);
-    } on PlatformException catch (error) {
-      KeycloakAuthTypeDTO.isBusy = false;
-      return Left(error.toString());
-    } on HandshakeException catch (error) {
-      KeycloakAuthTypeDTO.isBusy = false;
-      return Left('On a une érreur de type Handshake : ${error.toString()}. Possibilité de résolution :'
-          ' Vous utilisez un localhost pour faire la requête et celui-ci est en https au lieu de http.');
+      return result;
     } catch (error) {
       KeycloakAuthTypeDTO.isBusy = false;
-      return Left('On a pas pu générer les tokens avec le code. Message : $error');
+      if (error is UserInfosRevokedException) {
+        return throw UserInfosRevokedException();
+      }
+      return throw RefreshTokenException(message: 'On a pas pu générer les tokens avec le refresh token. Message : $error');
     }
   }
 
-  Future<Either<String, UserInfosDTO>> getUserInfos({
-    required KeycloakAuthTypeDTO keycloakAuthTypeDTO,
+  Future<UserInfosDTO> getUserInfos({
     required KeycloakConfDTO keycloakConfDTO,
+    required String accessToken,
     required bool isDevMode,
   }) async {
     KeycloakAuthTypeDTO.isBusy = true;
@@ -161,24 +152,19 @@ class KeycloakRepository {
         headers: {
           'Content-Type': 'application/json;charset=UTF-8',
           'Access-Control-Allow-Origin': '*',
+          'Authorization': 'Bearer $accessToken'
         },
       );
 
       /// On récupère la réponse de l'API
       final Map<String, dynamic> json = jsonDecode(httpResponse.body) as Map<String, dynamic>;
+
       final UserInfosDTO result = UserInfosDTO.fromJson(json);
 
-      return Right(result);
-    } on PlatformException catch (error) {
-      KeycloakAuthTypeDTO.isBusy = false;
-      return Left(error.toString());
-    } on HandshakeException catch (error) {
-      KeycloakAuthTypeDTO.isBusy = false;
-      return Left('On a une érreur de type Handshake : ${error.toString()}. Possibilité de résolution :'
-          ' Vous utilisez un localhost pour faire la requête et celui-ci est en https au lieu de http.');
+      return result;
     } catch (error) {
       KeycloakAuthTypeDTO.isBusy = false;
-      return Left('On a pas pu générer les tokens avec le code. Message : $error');
+      return throw UserInfosException(message: 'La récupération des données utilisateur a merder. Message : $error');
     }
   }
 }
