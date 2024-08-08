@@ -1,3 +1,6 @@
+[![Owner](https://img.shields.io/badge/Owner-Samakunchan%20Technology-blue)](https://samakunchan-technology.com/)
+[![Owner](https://img.shields.io/badge/OBSERVER--AUTH-v0.4.0-orange)](https://samakunchan-technology.com/)
+
 ## Features
 
 Le but de cette librairie est de gérer l'authentification OIDC en donnant un fichier de configuration. <br>
