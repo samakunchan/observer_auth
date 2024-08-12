@@ -14,6 +14,8 @@ class BaseRepository {
       return Left(UserInfosFailure(message: error.message));
     } on SignInException catch (error) {
       return Left(SignInFailure(message: error.message));
+    } on SignOutException catch (error) {
+      return Left(SignOutFailure(message: error.message));
     } on RefreshTokenException catch (error) {
       return Left(RefreshTokenFailure(message: error.message));
     } on ExchangeCodeException catch (error) {

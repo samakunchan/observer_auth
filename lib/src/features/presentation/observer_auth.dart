@@ -29,7 +29,7 @@ class ObserverAuthButton extends StatefulWidget {
   /// ```
   final KeycloakConfDTO keycloakConfDTO;
 
-  /// [TokenResponse]:
+  /// [ObserverTokenResponse]:
   /// ```json
   /// {
   ///     "access_token": "string",
@@ -43,7 +43,17 @@ class ObserverAuthButton extends StatefulWidget {
   ///     "scope": "string"
   /// }
   /// ```
-  final ValueChanged<TokenResponse> onSuccess;
+  final ValueChanged<ObserverTokenResponse> onSuccess;
+
+  /// Tout les [ObserverAuthFailure] sont :
+  /// - [SignInFailure]
+  /// - [ExchangeCodeFailure]
+  /// - [RefreshTokenFailure]
+  /// - [UserInfosFailure]
+  /// - [UserInfosRevokedFailure]
+  /// - [PlatformFailure]
+  /// - [HandshakeFailure]
+  /// - [IDontKnowWhatImDoingFailure]
   final ValueChanged<ObserverAuthFailure> onFailure;
 
   /// [UserInfosDTO]:
@@ -70,27 +80,17 @@ class ObserverAuthButton extends StatefulWidget {
 }
 
 class _ObserverAuthButtonState extends State<ObserverAuthButton> {
-  late final KeycloakRepository keycloakRepository;
-  late final ObserverAuthService observerAuthService;
-
-  @override
-  void initState() {
-    keycloakRepository = KeycloakRepository(keycloakConfDTO: widget.keycloakConfDTO);
-    observerAuthService = ObserverAuthService(keycloakRepository: keycloakRepository);
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return IconButton(
+    return TextButton(
       onPressed: () async {
-        final keycloakAuthTypeDTO = await observerAuthService.getTokenWithCode(
+        final keycloakAuthTypeDTO = await ObserverAuthFeature.instanceOfAuthService.getTokenWithCode(
           keycloakConfDTO: widget.keycloakConfDTO,
         );
         keycloakAuthTypeDTO.fold(
           (ObserverAuthFailure failure) => widget.onFailure(failure),
           (KeycloakAuthTypeDTO response) async {
-            final datas = await observerAuthService.exchangeCode(
+            final datas = await ObserverAuthFeature.instanceOfAuthService.exchangeCode(
               keycloakAuthTypeDTO: response,
               keycloakConfDTO: widget.keycloakConfDTO,
               isDevMode: widget.isDevMode,
@@ -98,8 +98,8 @@ class _ObserverAuthButtonState extends State<ObserverAuthButton> {
 
             datas.fold(
               (ObserverAuthFailure failure) => widget.onFailure(failure),
-              (TokenResponse response) async {
-                final userInfos = await observerAuthService.getUserInfos(
+              (ObserverTokenResponse response) async {
+                final userInfos = await ObserverAuthFeature.instanceOfAuthService.getUserInfos(
                   keycloakConfDTO: widget.keycloakConfDTO,
                   accessToken: response.accessToken ?? 'no access token',
                   isDevMode: widget.isDevMode,
@@ -115,7 +115,8 @@ class _ObserverAuthButtonState extends State<ObserverAuthButton> {
           },
         );
       },
-      icon: const Icon(Icons.login),
+      // icon: const Icon(Icons.login),
+      child: const Text('Se connecter'),
     );
   }
 }

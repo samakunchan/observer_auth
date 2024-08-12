@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:observer_auth/library_observer_auth.dart';
 import 'package:observer_auth/src/core/core_export.dart';
+import 'package:observer_auth/src/core/observer_auth_feature.dart';
 import 'package:observer_auth/src/core/repositories/base_repository.dart';
 
 class ObserverAuthService {
-  ObserverAuthService({required KeycloakRepository keycloakRepository}) : _keycloakRepository = keycloakRepository;
-  final KeycloakRepository _keycloakRepository;
+  const ObserverAuthService();
 
   /// Lancement du processus d'authentification via une URL.<br>
   /// [Sortie]:
@@ -19,8 +19,11 @@ class ObserverAuthService {
   Future<Either<ObserverAuthFailure, KeycloakAuthTypeDTO>> getTokenWithCode({required KeycloakConfDTO keycloakConfDTO}) async {
     return BaseRepository.makeRequest(
       () async {
-        final AuthorizationResponse response = await _keycloakRepository.signIn() ?? const AuthorizationResponse();
-        return _keycloakRepository.processAuthResponse(response);
+        final AuthorizationResponse response = await ObserverAuthFeature.instanceOfAuthRepository.signIn(
+              keycloakConfDTO: keycloakConfDTO,
+            ) ??
+            const AuthorizationResponse();
+        return ObserverAuthFeature.instanceOfAuthRepository.processAuthResponse(response);
       },
     );
   }
@@ -46,13 +49,13 @@ class ObserverAuthService {
   ///     "scope": "string"
   /// }
   /// ```
-  Future<Either<ObserverAuthFailure, TokenResponse>> exchangeCode({
+  Future<Either<ObserverAuthFailure, ObserverTokenResponse>> exchangeCode({
     required KeycloakConfDTO keycloakConfDTO,
     required KeycloakAuthTypeDTO keycloakAuthTypeDTO,
     required bool isDevMode,
   }) async {
     return BaseRepository.makeRequest(
-      () => _keycloakRepository.exchangeCode(
+      () => ObserverAuthFeature.instanceOfAuthRepository.exchangeCode(
         keycloakAuthTypeDTO: keycloakAuthTypeDTO,
         keycloakConfDTO: keycloakConfDTO,
         isDevMode: isDevMode,
@@ -80,41 +83,67 @@ class ObserverAuthService {
     required String accessToken,
     required bool isDevMode,
   }) async {
-    return await BaseRepository.makeRequest(
-      () => _keycloakRepository.getUserInfos(
+    return BaseRepository.makeRequest(
+      () => ObserverAuthFeature.instanceOfAuthRepository.getUserInfos(
         keycloakConfDTO: keycloakConfDTO,
         accessToken: accessToken,
         isDevMode: isDevMode,
       ),
     );
   }
-}
 
-Future<void> refreshToken({
-  required String refreshToken,
-  required ValueChanged<ObserverAuthFailure> onFailure,
-  required ValueChanged<TokenResponse> onSuccess,
-  bool isDevMode = false,
-}) async {
-  final KeycloakRepository keycloakRepository = KeycloakRepository(
-    keycloakConfDTO: KeycloakConfDTO.fromJson(
-      <String, dynamic>{
-        ...KeycloakConfDTO.empty.toJson(),
-        'refresh_token': refreshToken,
+  /// Déconnecte l'utilisateur grâce à l'idToken
+  /// [Sortie]:
+  /// ```json
+  /// {
+  ///     "state": "string"
+  /// }
+  /// ```
+  Future<Either<ObserverAuthFailure, EndSessionResponse?>> logout({required KeycloakConfDTO keycloakConfDTO}) {
+    return BaseRepository.makeRequest(
+      () => ObserverAuthFeature.instanceOfAuthRepository.signOut(keycloakConfDTO: keycloakConfDTO),
+    );
+  }
+
+  /// [Entree]:
+  /// ```json
+  /// {
+  ///     "refresh_token": "string",
+  /// }
+  /// ```
+  /// [Sortie]:
+  /// ```json
+  /// {
+  ///     "access_token": "string",
+  ///     "expires_in": number,
+  ///     "refresh_expires_in": number,
+  ///     "refresh_token": "string",
+  ///     "token_type": "Bearer",
+  ///     "id_token": "string",
+  ///     "not-before-policy": number,
+  ///     "session_state": "string",
+  ///     "scope": "string"
+  /// }
+  /// ```
+  static Future<void> refreshToken({
+    required String refreshToken,
+    required String issuer,
+    required ValueChanged<ObserverAuthFailure> onFailure,
+    required ValueChanged<ObserverTokenResponse> onSuccess,
+    bool isDevMode = false,
+  }) async {
+    final Either<ObserverAuthFailure, ObserverTokenResponse> request = await BaseRepository.makeRequest(
+      () async {
+        return ObserverAuthFeature.instanceOfAuthRepository.refreshToken(
+          refreshToken: refreshToken,
+          isDevMode: isDevMode,
+          issuer: issuer,
+        );
       },
-    ),
-  );
-
-  final request = await BaseRepository.makeRequest(
-    () async {
-      return keycloakRepository.refreshToken(
-        refreshToken: refreshToken,
-        isDevMode: isDevMode,
-      );
-    },
-  );
-  request.fold(
-    (ObserverAuthFailure failure) => onFailure(failure),
-    (TokenResponse response) => onSuccess(response),
-  );
+    );
+    request.fold(
+      (ObserverAuthFailure failure) => onFailure(failure),
+      (ObserverTokenResponse response) => onSuccess(response),
+    );
+  }
 }
