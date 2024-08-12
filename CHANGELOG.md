@@ -1,5 +1,24 @@
 # OBSERVER AUTH
 
+## 🚀 0.6.0 - 12/08/2024
+### Nouveautés
+
+- Création d'un nouveau token reponse pour remplacer celui de flutter_app_auth (Raison: mauvaise gestion des dates).
+- Création d'une exception personalisé pour le signOut.
+- Création d'une failure personalisé pour le signOut.
+- Installation de `get_it` et création des singletons pour le repository et le service.
+
+### Changements
+
+- Remplacement de tout les instanciations par les singletons.
+- Ajout de message de résoltion pour les PlatformException.
+
+### Correctifs
+
+- Fix: typo dans le keycloak_token_dto
+- Fix: typo de version dans le changelog.
+
+
 ## 🚀 0.5.2 - 08/08/2024
 ### Nouveautés
 
