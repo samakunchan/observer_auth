@@ -1,6 +1,6 @@
 name: observer_auth
 description: Package d'authentification à mon Keycloak via une API intermédiaire.
-version: 0.5.2
+version: 0.6.0
 homepage: https://github.com/samakunchan/observer_auth
 
 environment:
@@ -17,6 +17,7 @@ dependencies:
   freezed_annotation: ^2.4.4
   logger: ^2.4.0
   dartz: ^0.10.1
+  get_it: ^7.7.0
 
 
 dev_dependencies:

@@ -18,6 +18,10 @@ class SignInFailure extends ObserverAuthFailure {
   const SignInFailure({super.message});
 }
 
+class SignOutFailure extends ObserverAuthFailure {
+  const SignOutFailure({super.message});
+}
+
 class ExchangeCodeFailure extends ObserverAuthFailure {
   const ExchangeCodeFailure({super.message});
 }
