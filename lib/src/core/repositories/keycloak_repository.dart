@@ -18,7 +18,7 @@ class KeycloakRepository {
           keycloakConfDTO.redirectUri,
           discoveryUrl: keycloakConfDTO.discoveryUrl,
           scopes: keycloakConfDTO.scopes,
-          loginHint: 'cedric.badjah@gmail.com',
+          loginHint: 'samakunchan@gmail.com',
         ),
       );
 
@@ -177,7 +177,7 @@ class KeycloakRepository {
         headers: {
           'Content-Type': 'application/json;charset=UTF-8',
           'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $accessToken',
         },
       );
 

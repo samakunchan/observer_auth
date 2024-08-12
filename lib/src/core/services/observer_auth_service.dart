@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:observer_auth/library_observer_auth.dart';
 import 'package:observer_auth/src/core/core_export.dart';
-import 'package:observer_auth/src/core/observer_auth_feature.dart';
 import 'package:observer_auth/src/core/repositories/base_repository.dart';
 
 class ObserverAuthService {

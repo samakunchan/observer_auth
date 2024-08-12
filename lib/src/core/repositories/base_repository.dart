@@ -37,7 +37,7 @@ class BaseRepository {
           ' Vous utilisez un localhost pour faire la requête et celui-ci est en https au lieu de http.';
       return Left(
         HandshakeFailure(
-          message: 'On a une HandshakeFailure en cours : ${error.toString()}. $solveMessage',
+          message: 'On a une HandshakeFailure en cours : ${error.message}. $solveMessage',
         ),
       );
     }
