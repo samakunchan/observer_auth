@@ -101,7 +101,7 @@ class _ObserverAuthButtonState extends State<ObserverAuthButton> {
               (ObserverTokenResponse response) async {
                 final userInfos = await ObserverAuthFeature.instanceOfAuthService.getUserInfos(
                   keycloakConfDTO: widget.keycloakConfDTO,
-                  accessToken: response.accessToken ?? 'no access token',
+                  accessToken: response.accessToken,
                   isDevMode: widget.isDevMode,
                 );
                 userInfos.fold(
