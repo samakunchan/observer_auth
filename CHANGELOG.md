@@ -1,6 +1,6 @@
 # OBSERVER AUTH
 
-## 🚀 0.5.1 - 08/08/2024
+## 🚀 0.5.2 - 08/08/2024
 ### Nouveautés
 
 - Pas de nouveautés
@@ -100,20 +100,3 @@
 ### Correctifs
 
 - Pas de fixes
-
-
-
-## 🚀 0.3.0 - 08/08/2024
-### Nouveautés
-
-- Ajout de la fonctionnalité pour lire et sauvegarder les tokens.
-- Ajout de la fonctionnalité pour lire et sauvegarder les infos utilisateur.
-
-### Changements
-
-- Suppression de la variable `access_token` pour la remplacer avec l'instance sauvegarder en local storage dans toutes les requêtes HTTP.
-- Renommage des Abstractions pour plus de clarté.
-
-### Correctifs
-
-- Fix: Bug de retrofit
