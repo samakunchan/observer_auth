@@ -15,6 +15,10 @@ class SignInException extends ObserverAuthException {
   SignInException({super.message});
 }
 
+class SignOutException extends ObserverAuthException {
+  SignOutException({super.message});
+}
+
 class ExchangeCodeException extends ObserverAuthException {
   ExchangeCodeException({super.message});
 }
@@ -29,4 +33,8 @@ class UserInfosException extends ObserverAuthException {
 
 class UserInfosRevokedException extends ObserverAuthException {
   UserInfosRevokedException({super.message});
+}
+
+class TokenValidityException extends ObserverAuthException {
+  TokenValidityException({super.message});
 }

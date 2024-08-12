@@ -36,7 +36,7 @@ mixin _$KeycloakTokenDTO {
   int? get notBeforePolicy => throw _privateConstructorUsedError;
   @JsonKey(name: 'session_state')
   String? get sessionState => throw _privateConstructorUsedError;
-  @JsonKey(name: 'state')
+  @JsonKey(name: 'scope')
   String? get scope => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -60,7 +60,7 @@ abstract class $KeycloakTokenDTOCopyWith<$Res> {
       @JsonKey(name: 'token_type') String? tokenType,
       @JsonKey(name: 'not-before-policy') int? notBeforePolicy,
       @JsonKey(name: 'session_state') String? sessionState,
-      @JsonKey(name: 'state') String? scope});
+      @JsonKey(name: 'scope') String? scope});
 }
 
 /// @nodoc
@@ -144,7 +144,7 @@ abstract class _$$KeycloakTokenDTOImplCopyWith<$Res>
       @JsonKey(name: 'token_type') String? tokenType,
       @JsonKey(name: 'not-before-policy') int? notBeforePolicy,
       @JsonKey(name: 'session_state') String? sessionState,
-      @JsonKey(name: 'state') String? scope});
+      @JsonKey(name: 'scope') String? scope});
 }
 
 /// @nodoc
@@ -221,7 +221,7 @@ class _$KeycloakTokenDTOImpl implements _KeycloakTokenDTO {
       @JsonKey(name: 'token_type') this.tokenType,
       @JsonKey(name: 'not-before-policy') this.notBeforePolicy,
       @JsonKey(name: 'session_state') this.sessionState,
-      @JsonKey(name: 'state') this.scope});
+      @JsonKey(name: 'scope') this.scope});
 
   factory _$KeycloakTokenDTOImpl.fromJson(Map<String, dynamic> json) =>
       _$$KeycloakTokenDTOImplFromJson(json);
@@ -251,7 +251,7 @@ class _$KeycloakTokenDTOImpl implements _KeycloakTokenDTO {
   @JsonKey(name: 'session_state')
   final String? sessionState;
   @override
-  @JsonKey(name: 'state')
+  @JsonKey(name: 'scope')
   final String? scope;
 
   @override
@@ -321,7 +321,7 @@ abstract class _KeycloakTokenDTO implements KeycloakTokenDTO {
       @JsonKey(name: 'token_type') final String? tokenType,
       @JsonKey(name: 'not-before-policy') final int? notBeforePolicy,
       @JsonKey(name: 'session_state') final String? sessionState,
-      @JsonKey(name: 'state') final String? scope}) = _$KeycloakTokenDTOImpl;
+      @JsonKey(name: 'scope') final String? scope}) = _$KeycloakTokenDTOImpl;
 
   factory _KeycloakTokenDTO.fromJson(Map<String, dynamic> json) =
       _$KeycloakTokenDTOImpl.fromJson;
@@ -351,7 +351,7 @@ abstract class _KeycloakTokenDTO implements KeycloakTokenDTO {
   @JsonKey(name: 'session_state')
   String? get sessionState;
   @override
-  @JsonKey(name: 'state')
+  @JsonKey(name: 'scope')
   String? get scope;
   @override
   @JsonKey(ignore: true)

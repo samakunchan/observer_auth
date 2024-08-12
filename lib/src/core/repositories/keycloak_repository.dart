@@ -1,13 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:observer_auth/library_observer_auth.dart';
 
 class KeycloakRepository {
-  const KeycloakRepository({required this.keycloakConfDTO});
-  final KeycloakConfDTO keycloakConfDTO;
+  const KeycloakRepository();
 
-  Future<AuthorizationResponse?> signIn() async {
+  Future<AuthorizationResponse?> signIn({required KeycloakConfDTO keycloakConfDTO}) async {
     const FlutterAppAuth appAuth = FlutterAppAuth();
     try {
       KeycloakAuthTypeDTO.isBusy = true;
@@ -17,14 +18,45 @@ class KeycloakRepository {
           keycloakConfDTO.redirectUri,
           discoveryUrl: keycloakConfDTO.discoveryUrl,
           scopes: keycloakConfDTO.scopes,
-          loginHint: 'cedric.badjah@gmail.com',
+          loginHint: 'samakunchan@gmail.com',
         ),
       );
 
       return result;
     } catch (error) {
       KeycloakAuthTypeDTO.isBusy = false;
+      if (error is PlatformException) {
+        throw PlatformException(code: error.code, message: error.message, details: error.details, stacktrace: error.stacktrace);
+      }
+      if (error is HandshakeException) {
+        throw HandshakeException(error.message, error.osError);
+      }
       throw SignInException(message: "Une érreur est survenue lors du processus d'authentification.");
+    }
+  }
+
+  Future<EndSessionResponse?> signOut({required KeycloakConfDTO keycloakConfDTO}) async {
+    const FlutterAppAuth appAuth = FlutterAppAuth();
+    try {
+      KeycloakAuthTypeDTO.isBusy = true;
+      final EndSessionResponse? result = await appAuth.endSession(
+        EndSessionRequest(
+          idTokenHint: keycloakConfDTO.idToken,
+          postLogoutRedirectUrl: keycloakConfDTO.redirectUri,
+          discoveryUrl: keycloakConfDTO.discoveryUrl,
+        ),
+      );
+
+      return result;
+    } catch (error) {
+      KeycloakAuthTypeDTO.isBusy = false;
+      if (error is PlatformException) {
+        throw PlatformException(code: error.code, message: error.message, details: error.details, stacktrace: error.stacktrace);
+      }
+      if (error is HandshakeException) {
+        throw HandshakeException(error.message, error.osError);
+      }
+      throw SignOutException(message: 'Une érreur est survenue lors du processus de deconnexion.');
     }
   }
 
@@ -37,7 +69,7 @@ class KeycloakRepository {
     return keycloakAuthTypeDTO;
   }
 
-  Future<TokenResponse> exchangeCode({
+  Future<ObserverTokenResponse> exchangeCode({
     required KeycloakAuthTypeDTO keycloakAuthTypeDTO,
     required KeycloakConfDTO keycloakConfDTO,
     bool isDevMode = false,
@@ -64,33 +96,30 @@ class KeycloakRepository {
 
       /// On récupère la réponse de l'API
       final Map<String, dynamic> json = jsonDecode(httpResponse.body) as Map<String, dynamic>;
-      final DateTime now = DateTime.now();
-      final DateTime future = now.add(Duration(seconds: json['expires_in'] as int));
-      final TokenResponse result = TokenResponse(
-        json['access_token'] as String,
-        json['refresh_token'] as String,
-        future,
-        json['id_token'] as String,
-        json['token_type'] as String,
-        (json['scope'] as String).split(' '),
-        <String, dynamic>{},
-      );
+
+      final ObserverTokenResponse result = ObserverTokenResponse.fromJson(json);
 
       return result;
     } catch (error) {
       KeycloakAuthTypeDTO.isBusy = false;
+      if (error is PlatformException) {
+        throw PlatformException(code: error.code, message: error.message, details: error.details, stacktrace: error.stacktrace);
+      }
+      if (error is HandshakeException) {
+        throw HandshakeException(error.message, error.osError);
+      }
       return throw ExchangeCodeException(message: 'On a pas pu générer les tokens avec le code. Message : $error');
     }
   }
 
-  Future<TokenResponse> refreshToken({
+  Future<ObserverTokenResponse> refreshToken({
     required String refreshToken,
+    required String issuer,
     bool isDevMode = false,
   }) async {
     KeycloakAuthTypeDTO.isBusy = true;
-    final Uri uri = !isDevMode
-        ? Uri.parse('${keycloakConfDTO.issuer}/authentication/credentials')
-        : Uri.parse('http://localhost:3005/authentication/credentials');
+    final Uri uri =
+        !isDevMode ? Uri.parse('$issuer/authentication/credentials') : Uri.parse('http://localhost:3005/authentication/credentials');
 
     try {
       /// On envoie les infos vers l'API
@@ -113,21 +142,17 @@ class KeycloakRepository {
       }
 
       /// On récupère la réponse de l'API
-      final DateTime now = DateTime.now();
-      final DateTime future = now.add(Duration(seconds: json['expires_in'] as int));
-      final TokenResponse result = TokenResponse(
-        json['access_token'] as String,
-        json['refresh_token'] as String,
-        future,
-        json['id_token'] as String,
-        json['token_type'] as String,
-        (json['scope'] as String).split(' '),
-        <String, dynamic>{},
-      );
+      final ObserverTokenResponse result = ObserverTokenResponse.fromJson(json);
 
       return result;
     } catch (error) {
       KeycloakAuthTypeDTO.isBusy = false;
+      if (error is PlatformException) {
+        throw PlatformException(code: error.code, message: error.message, details: error.details, stacktrace: error.stacktrace);
+      }
+      if (error is HandshakeException) {
+        throw HandshakeException(error.message, error.osError);
+      }
       if (error is UserInfosRevokedException) {
         return throw UserInfosRevokedException();
       }
@@ -152,7 +177,7 @@ class KeycloakRepository {
         headers: {
           'Content-Type': 'application/json;charset=UTF-8',
           'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Bearer $accessToken'
+          'Authorization': 'Bearer $accessToken',
         },
       );
 
@@ -163,6 +188,12 @@ class KeycloakRepository {
 
       return result;
     } catch (error) {
+      if (error is PlatformException) {
+        throw PlatformException(code: error.code, message: error.message, details: error.details, stacktrace: error.stacktrace);
+      }
+      if (error is HandshakeException) {
+        throw HandshakeException(error.message, error.osError);
+      }
       KeycloakAuthTypeDTO.isBusy = false;
       return throw UserInfosException(message: 'La récupération des données utilisateur a merder. Message : $error');
     }

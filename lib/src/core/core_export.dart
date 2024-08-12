@@ -21,6 +21,10 @@ export 'dtos/keycloak_conf_dto.dart';
 export 'dtos/keycloak_token_dto.dart';
 
 /// DTO
+/// TOKENS
+export 'dtos/observer_token_response.dart';
+
+/// DTO
 /// USER INFOS
 export 'dtos/user_infos_dto.dart';
 
@@ -31,6 +35,9 @@ export 'errors/exception.dart';
 /// EXCEPTIONS
 /// EXCEPTION
 export 'errors/failures.dart';
+
+/// DEPENDENCY INJECTION
+export 'observer_auth_feature.dart';
 
 /// REPOSITORIES
 /// KEYCLOAK

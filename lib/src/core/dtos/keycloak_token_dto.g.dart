@@ -17,7 +17,7 @@ _$KeycloakTokenDTOImpl _$$KeycloakTokenDTOImplFromJson(
       tokenType: json['token_type'] as String?,
       notBeforePolicy: json['not-before-policy'] as int?,
       sessionState: json['session_state'] as String?,
-      scope: json['state'] as String?,
+      scope: json['scope'] as String?,
     );
 
 Map<String, dynamic> _$$KeycloakTokenDTOImplToJson(
@@ -31,5 +31,5 @@ Map<String, dynamic> _$$KeycloakTokenDTOImplToJson(
       'token_type': instance.tokenType,
       'not-before-policy': instance.notBeforePolicy,
       'session_state': instance.sessionState,
-      'state': instance.scope,
+      'scope': instance.scope,
     };
