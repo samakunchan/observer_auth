@@ -8,9 +8,9 @@ on:
       - 'ci/**'
       - 'test/**'
 
-name: 🔎 [VERSION] Test de l'existance du tag.
+name: 🔎 [VERSION] Peut on créer un nouveau tag ?
 jobs:
-  create-tags:
+  test-tag-avaibility:
     runs-on: windows-latest
     steps:
       - run: echo "🎉 Bravo 🎉. Le job se lance sur l'évènement ${{ github.event_name }}."
@@ -35,7 +35,7 @@ jobs:
           repo: ${{ github.repository }}
 
       - name: Test if the current tag exists.
-        uses: actions/github-script@v3
+        uses: actions/github-script@v7
         if: steps.check-tag.outputs.exists == 'true'
         with:
           script: |

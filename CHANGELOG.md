@@ -1,5 +1,21 @@
 # OBSERVER AUTH
 
+## 🚀 0.7.0 - 07/09/2024
+### Nouveautés
+
+- Création d'un nouveau workflow pour empêcher les PR directs ver le main.
+
+### Changements
+
+- Refacto des noms de fichiers pour une meilleur lisibilité.
+- Mise à jour des noms des jobs et du workflow aussi pour une meilleur lisibilité.
+- Mise à jour de la version de node avec `actions/github-script@v7`.
+
+### Correctifs
+
+- Pas de fixes.
+
+
 ## 🚀 0.6.0 - 12/08/2024
 ### Nouveautés
 

@@ -1,11 +1,15 @@
 on:
-  pull_request:
+  push:
     branches:
-      - developpement
+      - 'feat/**'
+      - 'features/**'
+      - 'fix/**'
+      - 'docs/**'
+      - 'ci/**'
 
-name: 🚚 [PR DEVELOPPEMENT] Workflow pour le lancement des tests sur Observer Auth
+name: 🚀 [PUSH] Workflow pour le lancement des tests sur Observer Auth
 jobs:
-  observer_platform_macos:
+  observer_auth:
     name: 🛂 Librairie d'authentification avec Keycloak
     runs-on: ubuntu-latest
     steps:
