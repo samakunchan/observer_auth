@@ -3,11 +3,11 @@ on:
     branches:
       - main
 
-name: 🚚 [PR DEVELOPPEMENT] Workflow qui test la PR.
+name: 🚚 [TEST PR] Workflow qui test la PR.
 jobs:
   good_branch:
     name: 📟 Destination de la PR.
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - run: echo "🎉 Bravo 🎉. Le job se lance sur l'évènement ${{ github.event_name }}."
