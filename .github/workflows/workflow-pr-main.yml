@@ -12,8 +12,6 @@ jobs:
     steps:
       - run: echo "🎉 Bravo 🎉. Le job se lance sur l'évènement ${{ github.event_name }}."
       - run: echo "Le nom de la branche est ${{ github.ref }} et le nom du repository est ${{ github.repository }}."
-      - run: echo "Le nom de la PR head est ${{ github.event.pull_request.head.ref }}."
-      - run: echo "Le nom de la PR est base ${{ github.event.pull_request.base.ref }}."
 
       - name: Test de la branche d'origine.
         uses: actions/github-script@v7
