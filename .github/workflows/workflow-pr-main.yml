@@ -28,4 +28,4 @@ jobs:
         if: github.event.pull_request.head.ref == 'refs/heads/main'
         with:
           script: |
-            core.setFailed("La branche de destination doit être : 'main'. Actuellement la branche c'est '${{ github.event.pull_request.base.ref }}'.")
+            core.setFailed("La branche de destination doit être : 'main'. Actuellement la branche c'est '${{ github.event.pull_request.head.ref }}'.")
