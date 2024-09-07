@@ -3,7 +3,7 @@ on:
     branches:
       - main
 
-name: 🚚 [TEST PR] Workflow qui test la PR.
+name: 🚚 [PROTECTION MAIN] Workflow qui test la PR.
 jobs:
   good_branch:
     name: 📟 Destination de la PR.
