@@ -15,14 +15,14 @@ jobs:
 
       - name: Test de la branche d'origine.
         uses: actions/github-script@v3
-        if: github.ref == 'refs/heads/developpement'
+        if: github.ref != 'refs/heads/developpement'
         with:
           script: |
             core.setFailed("La branche d'origine doit être : 'developpement'.")
 
       - name: Test de la branche de destination.
         uses: actions/github-script@v3
-        if: github.event.pull_request.base.ref == 'refs/heads/main'
+        if: github.event.pull_request.base.ref != 'refs/heads/main'
         with:
           script: |
             core.setFailed("La branche de destination doit être : 'main'.")
