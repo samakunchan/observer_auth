@@ -10,7 +10,7 @@ on:
 
 name: 🔎 [VERSION] Peut on créer un nouveau tag ?
 jobs:
-  create-tags:
+  test-tag-avaibility:
     runs-on: windows-latest
     steps:
       - run: echo "🎉 Bravo 🎉. Le job se lance sur l'évènement ${{ github.event_name }}."
