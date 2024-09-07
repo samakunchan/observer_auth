@@ -14,14 +14,14 @@ jobs:
       - run: echo "Le nom de la branche est ${{ github.ref }} et le nom du repository est ${{ github.repository }}."
 
       - name: Test de la branche d'origine.
-        uses: actions/github-script@v3
+        uses: actions/github-script@v7
         if: github.ref != 'refs/heads/developpement'
         with:
           script: |
             core.setFailed("La branche d'origine doit être : 'developpement'. Actuelle la branche c'est ${{ github.ref }}.")
 
       - name: Test de la branche de destination.
-        uses: actions/github-script@v3
+        uses: actions/github-script@v7
         if: github.event.pull_request.base.ref != 'refs/heads/main'
         with:
           script: |
