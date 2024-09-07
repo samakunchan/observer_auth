@@ -8,7 +8,7 @@ on:
       - 'ci/**'
       - 'test/**'
 
-name: 🔎 [VERSION] Test de l'existance du tag.
+name: 🔎 [VERSION] Peut on créer un nouveau tag ?
 jobs:
   create-tags:
     runs-on: windows-latest
