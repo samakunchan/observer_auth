@@ -1,12 +1,16 @@
 on:
-  pull_request:
+  push:
     branches:
-      - developpement
+      - 'feat/**'
+      - 'features/**'
+      - 'fix/**'
+      - 'docs/**'
+      - 'ci/**'
 
-name: 🚚 [PR DEVELOPPEMENT] Workflow pour le lancement des tests sur Observer Auth
+name: 🚀 [PUSH] Workflow pour le lancement des tests sur Observer Auth
 jobs:
   observer_auth:
-    name: 🔓 Librairie d'authentification avec Keycloak
+    name: 🛂 Librairie d'authentification avec Keycloak
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 Bravo 🎉. Le job se lance sur l'évènement ${{ github.event_name }}."
@@ -23,14 +27,3 @@ jobs:
       - run: |
           git config --global --add safe.directory /opt/hostedtoolcache/flutter/${{ steps.flutter-action.outputs.CHANNEL }}-${{ steps.flutter-action.outputs.VERSION }}-${{ steps.flutter-action.outputs.ARCHITECTURE }}
           flutter --version
-  good_branch:
-    name: 📟 Destination de la PR.
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Test de la branche de PR.
-        uses: actions/github-script@v3
-        if: github.ref == 'refs/heads/main'
-        with:
-          script: |
-            core.setFailed("Il faut faire la PR sur la branche 'developpement'.")
