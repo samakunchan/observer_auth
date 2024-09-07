@@ -8,6 +8,7 @@
 ### Changements
 
 - Refacto des noms de fichiers pour une meilleur lisibilité.
+- Mise à jour des noms aussi pour une meilleur lisibilité.
 - Mise à jour de la version de node avec `actions/github-script@v7`.
 
 ### Correctifs
