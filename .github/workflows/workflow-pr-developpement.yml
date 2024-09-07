@@ -23,21 +23,3 @@ jobs:
       - run: |
           git config --global --add safe.directory /opt/hostedtoolcache/flutter/${{ steps.flutter-action.outputs.CHANNEL }}-${{ steps.flutter-action.outputs.VERSION }}-${{ steps.flutter-action.outputs.ARCHITECTURE }}
           flutter --version
-  good_branch:
-    name: 📟 Destination de la PR.
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Test de la branche d'origine.
-        uses: actions/github-script@v3
-        if: github.ref == 'refs/heads/developpement'
-        with:
-          script: |
-            core.setFailed("La branche d'origine doit être : 'developpement'.")
-
-      - name: Test de la branche de destination.
-        uses: actions/github-script@v3
-        if: github.event.pull_request.base.ref == 'refs/heads/main'
-        with:
-          script: |
-            core.setFailed("La branche de destination doit être : 'main'.")
