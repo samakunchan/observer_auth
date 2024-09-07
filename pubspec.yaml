@@ -1,6 +1,6 @@
 name: observer_auth
 description: Package d'authentification à mon Keycloak via une API intermédiaire.
-version: 0.6.0
+version: 0.7.0
 homepage: https://github.com/samakunchan/observer_auth
 
 environment:
