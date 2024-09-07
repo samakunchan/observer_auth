@@ -10,6 +10,7 @@
 - Refacto des noms de fichiers pour une meilleur lisibilité.
 - Mise à jour des noms des jobs et du workflow aussi pour une meilleur lisibilité.
 - Mise à jour de la version de node avec `actions/github-script@v7`.
+- Amélioration de la visibilité des noms (ref, repository, branches).
 
 ### Correctifs
 
