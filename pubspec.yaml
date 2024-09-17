@@ -1,6 +1,6 @@
 name: observer_auth
 description: Package d'authentification à mon Keycloak via une API intermédiaire.
-version: 0.7.1
+version: 0.7.2
 homepage: https://github.com/samakunchan/observer_auth
 
 environment:
@@ -10,12 +10,25 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # Librairie OAuth
   flutter_appauth: ^6.0.2
+
+  # HTTP Request
   http: ^1.1.0
+
+  # Storage
   flutter_secure_storage: ^9.0.0
+
+  # Code generation
   json_annotation: ^4.8.1
   freezed_annotation: ^2.4.4
+  freezed: ^2.5.2
+
+  # Debugger
   logger: ^2.4.0
+
+  # Injection de dépendance
   dartz: ^0.10.1
   get_it: ^7.7.0
 
@@ -24,7 +37,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  very_good_analysis: ^5.0.0+1
   json_serializable: ^6.7.1
-  build_runner: ^2.4.6
-  freezed: ^2.5.2
+  build_runner: ^2.4.12
+  very_good_analysis: ^5.0.0+1
+  analyzer: ^6.7.0
+
+  # Resous l'érreur : Could not find a command named "$PWD//flutter/bin/cache/dart-sdk/bin/snapshots/frontend_server.dart.snapshot
+  # Bizarrement non nécessaire sur "core".
+  frontend_server_client: ^4.0.0

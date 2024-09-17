@@ -31,8 +31,12 @@ mixin _$ErrorAuthDTO {
   @JsonKey(name: 'date')
   String get date => throw _privateConstructorUsedError;
 
+  /// Serializes this ErrorAuthDTO to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ErrorAuthDTO
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ErrorAuthDTOCopyWith<ErrorAuthDTO> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -61,6 +65,8 @@ class _$ErrorAuthDTOCopyWithImpl<$Res, $Val extends ErrorAuthDTO>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ErrorAuthDTO
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -119,6 +125,8 @@ class __$$ErrorAuthDTOImplCopyWithImpl<$Res>
       _$ErrorAuthDTOImpl _value, $Res Function(_$ErrorAuthDTOImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ErrorAuthDTO
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -202,12 +210,14 @@ class _$ErrorAuthDTOImpl implements _ErrorAuthDTO {
             (identical(other.date, date) || other.date == date));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, statusCode, errorName, description, path, date);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ErrorAuthDTO
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorAuthDTOImplCopyWith<_$ErrorAuthDTOImpl> get copyWith =>
@@ -247,8 +257,11 @@ abstract class _ErrorAuthDTO implements ErrorAuthDTO {
   @override
   @JsonKey(name: 'date')
   String get date;
+
+  /// Create a copy of ErrorAuthDTO
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ErrorAuthDTOImplCopyWith<_$ErrorAuthDTOImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

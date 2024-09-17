@@ -41,8 +41,12 @@ mixin _$KeycloakConfDTO {
   @JsonKey(name: 'id_token')
   String? get idToken => throw _privateConstructorUsedError;
 
+  /// Serializes this KeycloakConfDTO to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of KeycloakConfDTO
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $KeycloakConfDTOCopyWith<KeycloakConfDTO> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -76,6 +80,8 @@ class _$KeycloakConfDTOCopyWithImpl<$Res, $Val extends KeycloakConfDTO>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of KeycloakConfDTO
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -164,6 +170,8 @@ class __$$KeycloakConfDTOImplCopyWithImpl<$Res>
       _$KeycloakConfDTOImpl _value, $Res Function(_$KeycloakConfDTOImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of KeycloakConfDTO
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -310,7 +318,7 @@ class _$KeycloakConfDTOImpl implements _KeycloakConfDTO {
             (identical(other.idToken, idToken) || other.idToken == idToken));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -325,7 +333,9 @@ class _$KeycloakConfDTOImpl implements _KeycloakConfDTO {
       accessToken,
       idToken);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of KeycloakConfDTO
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$KeycloakConfDTOImplCopyWith<_$KeycloakConfDTOImpl> get copyWith =>
@@ -387,8 +397,11 @@ abstract class _KeycloakConfDTO implements KeycloakConfDTO {
   @override
   @JsonKey(name: 'id_token')
   String? get idToken;
+
+  /// Create a copy of KeycloakConfDTO
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$KeycloakConfDTOImplCopyWith<_$KeycloakConfDTOImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
