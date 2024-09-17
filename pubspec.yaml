@@ -28,3 +28,6 @@ dev_dependencies:
   json_serializable: ^6.7.1
   build_runner: ^2.4.6
   freezed: ^2.5.2
+  # Resous l'érreur : Could not find a command named "$PWD//flutter/bin/cache/dart-sdk/bin/snapshots/frontend_server.dart.snapshot
+  # Bizarrement non nécessaire sur "core".
+  frontend_server_client: ^4.0.0
