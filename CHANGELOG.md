@@ -1,5 +1,20 @@
 # OBSERVER AUTH
 
+## 🚀 0.7.2 - 17/09/2024
+### Nouveautés
+
+- Pas de nouveautés.
+
+### Changements
+
+- Ajout d'une documentation mieux répérer ce que fait chaque dépendance.
+- Refresh de DTOS.
+
+### Correctifs
+
+- Ajout d'une dépendance `frontend_server_client` habituellement inutile, mais nécessaire ici.
+
+ 
 ## 🚀 0.7.1 - 17/09/2024
 ### Nouveautés
 
@@ -11,7 +26,7 @@
 
 ### Correctifs
 
-- Les conditions n'étaient pas bonne
+- Les conditions n'étaient pas bonnes
 
 ## 🚀 0.7.0 - 07/09/2024
 ### Nouveautés
