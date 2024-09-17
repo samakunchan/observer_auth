@@ -1,5 +1,18 @@
 # OBSERVER AUTH
 
+## 🚀 0.7.1 - 17/09/2024
+### Nouveautés
+
+- Pas de nouveautés.
+
+### Changements
+
+- Pas de changement.
+
+### Correctifs
+
+- Les conditions n'étaient pas bonne
+
 ## 🚀 0.7.0 - 07/09/2024
 ### Nouveautés
 
