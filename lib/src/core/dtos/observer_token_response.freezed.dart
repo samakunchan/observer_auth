@@ -38,8 +38,12 @@ mixin _$ObserverTokenResponse {
   @JsonKey(name: 'scope')
   String get scope => throw _privateConstructorUsedError;
 
+  /// Serializes this ObserverTokenResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ObserverTokenResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ObserverTokenResponseCopyWith<ObserverTokenResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -72,6 +76,8 @@ class _$ObserverTokenResponseCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ObserverTokenResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -150,6 +156,8 @@ class __$$ObserverTokenResponseImplCopyWithImpl<$Res>
       $Res Function(_$ObserverTokenResponseImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ObserverTokenResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -266,12 +274,14 @@ class _$ObserverTokenResponseImpl implements _ObserverTokenResponse {
             (identical(other.scope, scope) || other.scope == scope));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, accessToken, refreshToken,
       idToken, expiresIn, tokenType, notBeforePolicy, sessionState, scope);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ObserverTokenResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ObserverTokenResponseImplCopyWith<_$ObserverTokenResponseImpl>
@@ -325,8 +335,11 @@ abstract class _ObserverTokenResponse implements ObserverTokenResponse {
   @override
   @JsonKey(name: 'scope')
   String get scope;
+
+  /// Create a copy of ObserverTokenResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ObserverTokenResponseImplCopyWith<_$ObserverTokenResponseImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -25,8 +25,12 @@ mixin _$KeycloakAuthTypeDTO {
   @JsonKey(name: 'authorization_code')
   String? get authorizationCode => throw _privateConstructorUsedError;
 
+  /// Serializes this KeycloakAuthTypeDTO to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of KeycloakAuthTypeDTO
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $KeycloakAuthTypeDTOCopyWith<KeycloakAuthTypeDTO> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$KeycloakAuthTypeDTOCopyWithImpl<$Res, $Val extends KeycloakAuthTypeDTO>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of KeycloakAuthTypeDTO
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class __$$KeycloakAuthTypeDTOImplCopyWithImpl<$Res>
       $Res Function(_$KeycloakAuthTypeDTOImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of KeycloakAuthTypeDTO
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -144,11 +152,13 @@ class _$KeycloakAuthTypeDTOImpl implements _KeycloakAuthTypeDTO {
                 other.authorizationCode == authorizationCode));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, codeVerifier, authorizationCode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of KeycloakAuthTypeDTO
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$KeycloakAuthTypeDTOImplCopyWith<_$KeycloakAuthTypeDTOImpl> get copyWith =>
@@ -178,8 +188,11 @@ abstract class _KeycloakAuthTypeDTO implements KeycloakAuthTypeDTO {
   @override
   @JsonKey(name: 'authorization_code')
   String? get authorizationCode;
+
+  /// Create a copy of KeycloakAuthTypeDTO
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$KeycloakAuthTypeDTOImplCopyWith<_$KeycloakAuthTypeDTOImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
