@@ -3,7 +3,7 @@ on:
     branches:
       - main
 
-name: 🚚 [PROTECTION MAIN] Workflow qui test la PR.
+name: 🚓 [PROTECTION MAIN] Workflow qui test la PR.
 jobs:
   good_branch:
     name: 📟 Destination de la PR.
@@ -18,14 +18,14 @@ jobs:
 
       - name: Test de la branche d'origine.
         uses: actions/github-script@v7
-        if: github.event.pull_request.base.ref == 'refs/heads/developpement'
+        if: github.event.pull_request.head.ref != 'developpement'
         with:
           script: |
-            core.setFailed("La branche d'origine doit être : 'developpement'. Actuelle la branche c'est '${{ github.event.pull_request.base.ref }}'.")
+            core.setFailed("La branche d'origine doit être : 'developpement'. Actuellement la branche c'est '${{ github.event.pull_request.head.ref }}'.")
 
       - name: Test de la branche de destination.
         uses: actions/github-script@v7
-        if: github.event.pull_request.head.ref == 'refs/heads/main'
+        if: github.event.pull_request.base.ref != 'main'
         with:
           script: |
-            core.setFailed("La branche de destination doit être : 'main'. Actuellement la branche c'est '${{ github.event.pull_request.head.ref }}'.")
+            core.setFailed("La branche de destination doit être : 'main'. Actuellement la branche c'est '${{ github.event.pull_request.base.ref }}'.")
