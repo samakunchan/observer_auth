@@ -6,6 +6,7 @@ class ObserverLogout extends StatefulWidget {
     required this.keycloakConfDTO,
     required this.onSuccess,
     required this.onFailure,
+    this.isDevMode = false,
     super.key,
   });
 
@@ -46,6 +47,10 @@ class ObserverLogout extends StatefulWidget {
   /// - [IDontKnowWhatImDoingFailure]
   final ValueChanged<ObserverAuthFailure> onFailure;
 
+  /// Afin d'utiliser l'API local.
+  /// Si cette valeur est [false], il faut absolument configuré la valeur du issuer du [KeycloakConfDTO].
+  final bool isDevMode;
+
   @override
   State<ObserverLogout> createState() => _ObserverLogoutState();
 }
@@ -57,6 +62,7 @@ class _ObserverLogoutState extends State<ObserverLogout> {
       onPressed: () async {
         final endSession = await ObserverAuthFeature.instanceOfAuthService.logout(
           keycloakConfDTO: widget.keycloakConfDTO,
+          isDevMode: widget.isDevMode,
         );
 
         endSession.fold(

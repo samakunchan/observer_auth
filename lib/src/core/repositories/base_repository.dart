@@ -31,7 +31,11 @@ class BaseRepository {
       final String message = 'On a une PlatformFailure en cours : ${solveMessage.isEmpty ? error.message : solveMessage}';
       return Left(PlatformFailure(message: message));
     } on UserInfosRevokedException catch (error) {
-      return Left(UserInfosRevokedFailure(message: 'La session utilisateur a été révoqué. Message : ${error.message}'));
+      if (error.message == defaultExceptionMessage) {
+        return Left(UserInfosRevokedFailure(message: 'La session utilisateur a été révoqué.'));
+      } else {
+        return Left(UserInfosRevokedFailure(message: 'La session utilisateur a été révoqué. Message : ${error.message}'));
+      }
     } on HandshakeException catch (error) {
       const String solveMessage = 'Possibilité de résolution :'
           ' Vous utilisez un localhost pour faire la requête et celui-ci est en https au lieu de http.';

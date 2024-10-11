@@ -92,15 +92,22 @@ class ObserverAuthService {
   }
 
   /// Déconnecte l'utilisateur grâce à l'idToken
+  /// Revoke le token utilisateur grâve au refreshToken
   /// [Sortie]:
   /// ```json
   /// {
   ///     "state": "string"
   /// }
   /// ```
-  Future<Either<ObserverAuthFailure, EndSessionResponse?>> logout({required KeycloakConfDTO keycloakConfDTO}) {
+  Future<Either<ObserverAuthFailure, EndSessionResponse?>> logout({
+    required KeycloakConfDTO keycloakConfDTO,
+    required bool isDevMode,
+  }) {
     return BaseRepository.makeRequest(
-      () => ObserverAuthFeature.instanceOfAuthRepository.signOut(keycloakConfDTO: keycloakConfDTO),
+      () => ObserverAuthFeature.instanceOfAuthRepository.signOut(
+        keycloakConfDTO: keycloakConfDTO,
+        isDevMode: isDevMode,
+      ),
     );
   }
 
