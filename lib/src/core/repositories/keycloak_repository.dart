@@ -35,7 +35,10 @@ class KeycloakRepository {
     }
   }
 
-  Future<EndSessionResponse?> signOut({required KeycloakConfDTO keycloakConfDTO}) async {
+  Future<EndSessionResponse?> signOut({
+    required KeycloakConfDTO keycloakConfDTO,
+    bool isDevMode = false,
+  }) async {
     const FlutterAppAuth appAuth = FlutterAppAuth();
     try {
       KeycloakAuthTypeDTO.isBusy = true;
@@ -46,6 +49,28 @@ class KeycloakRepository {
           discoveryUrl: keycloakConfDTO.discoveryUrl,
         ),
       );
+
+      if (result != null) {
+        final Uri uri = !isDevMode
+            ? Uri.parse('${keycloakConfDTO.issuer}/authentication/revoke-token')
+            : Uri.parse('http://localhost:3005/authentication/revoke-token');
+
+        /// On envoie les infos vers l'API
+        final http.Response httpResponse = await http.post(
+          uri,
+          body: jsonEncode(<String, dynamic>{
+            'refresh_token': keycloakConfDTO.refreshToken,
+          }),
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Access-Control-Allow-Origin': '*',
+            'Authorization': 'Bearer ${keycloakConfDTO.accessToken}',
+          },
+        );
+
+        /// On récupère la réponse de l'API
+        final Map<String, dynamic> json = jsonDecode(httpResponse.body) as Map<String, dynamic>;
+      }
 
       return result;
     } catch (error) {
