@@ -1,5 +1,20 @@
 # OBSERVER AUTH
 
+## 🚀 0.8.0 - 11/10/2024
+### Nouveautés
+
+- Pas de nouveautés.
+
+### Changements
+
+- Ajout d'une requête HTTP pour revoke le token via l'API.
+- Ajout du dev mode pour le logout.
+
+### Correctifs
+
+- Pas de fixes.
+
+
 ## 🚀 0.7.2 - 17/09/2024
 ### Nouveautés
 
