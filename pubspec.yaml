@@ -4,8 +4,7 @@ version: 0.8.0
 homepage: https://github.com/samakunchan/observer_auth
 
 environment:
-  sdk: '>=3.1.5 <4.0.0'
-  flutter: ">=1.17.0"
+  sdk: ^3.10.1
 
 dependencies:
   flutter:
@@ -21,16 +20,19 @@ dependencies:
   flutter_secure_storage: ^9.0.0
 
   # Code generation
-  json_annotation: ^4.8.1
-  freezed_annotation: ^2.4.4
-  freezed: ^2.5.2
+  json_annotation: ^4.10.0
+  freezed_annotation: ^3.1.0
+  freezed: ^3.2.5
 
   # Debugger
   logger: ^2.4.0
 
   # Injection de dépendance
   dartz: ^0.10.1
-  get_it: ^7.7.0
+  get_it: ^9.2.0
+
+  # Decodeur de tokens
+  jwt_decoder: ^2.0.1
 
 
 dev_dependencies:
@@ -40,7 +42,7 @@ dev_dependencies:
   json_serializable: ^6.7.1
   build_runner: ^2.4.12
   very_good_analysis: ^5.0.0+1
-  analyzer: ^6.7.0
+  analyzer: ^10.0.1
 
   # Resous l'érreur : Could not find a command named "$PWD//flutter/bin/cache/dart-sdk/bin/snapshots/frontend_server.dart.snapshot
   # Bizarrement non nécessaire sur "core".
