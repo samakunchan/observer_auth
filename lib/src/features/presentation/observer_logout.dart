@@ -6,7 +6,10 @@ class ObserverLogout extends StatefulWidget {
     required this.keycloakConfDTO,
     required this.onSuccess,
     required this.onFailure,
+    required this.buttonType,
     this.isDevMode = false,
+    this.text = 'Se deconnecter',
+    this.icon = Icons.logout,
     super.key,
   });
 
@@ -51,6 +54,10 @@ class ObserverLogout extends StatefulWidget {
   /// Si cette valeur est [false], il faut absolument configuré la valeur du issuer du [KeycloakConfDTO].
   final bool isDevMode;
 
+  final ObserverButtonEnum buttonType;
+  final String text;
+  final IconData icon;
+
   @override
   State<ObserverLogout> createState() => _ObserverLogoutState();
 }
@@ -58,19 +65,28 @@ class ObserverLogout extends StatefulWidget {
 class _ObserverLogoutState extends State<ObserverLogout> {
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () async {
-        final endSession = await ObserverAuthFeature.instanceOfAuthService.logout(
-          keycloakConfDTO: widget.keycloakConfDTO,
-          isDevMode: widget.isDevMode,
+    switch (widget.buttonType) {
+      case ObserverButtonEnum.iconButton:
+        return IconButton(
+          onPressed: _onPressed,
+          icon: const Icon(Icons.logout, color: Colors.red),
         );
+      case ObserverButtonEnum.textButton:
+        return TextButton(onPressed: _onPressed, child: Text(widget.text));
+      case ObserverButtonEnum.elevatedButton:
+        return ElevatedButton(onPressed: _onPressed, child: Text(widget.text));
+    }
+  }
 
-        endSession.fold(
-          (ObserverAuthFailure failure) => widget.onFailure(failure),
-          (EndSessionResponse? response) => widget.onSuccess(response!),
-        );
-      },
-      icon: const Icon(Icons.logout, color: Colors.red),
+  Future<void> _onPressed() async {
+    final endSession = await ObserverAuthFeature.instanceOfAuthService.logout(
+      keycloakConfDTO: widget.keycloakConfDTO,
+      isDevMode: widget.isDevMode,
+    );
+
+    endSession.fold(
+      (ObserverAuthFailure failure) => widget.onFailure(failure),
+      (EndSessionResponse? response) => widget.onSuccess(response!),
     );
   }
 }

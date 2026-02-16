@@ -51,3 +51,8 @@ linter:
     one_member_abstracts: false
     public_member_api_docs: false
     sort_pub_dependencies: false
+    avoid_types_on_closure_parameters: false
+
+formatter:
+  page_width: 130
+  trailing_commas: preserve

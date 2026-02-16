@@ -11,7 +11,7 @@ part 'keycloak_auth_type_dto.g.dart';
 /// }
 /// ```
 @freezed
-class KeycloakAuthTypeDTO with _$KeycloakAuthTypeDTO {
+abstract class KeycloakAuthTypeDTO with _$KeycloakAuthTypeDTO {
   const factory KeycloakAuthTypeDTO({
     @JsonKey(name: 'code_verifier') String? codeVerifier,
     @JsonKey(name: 'authorization_code') String? authorizationCode,

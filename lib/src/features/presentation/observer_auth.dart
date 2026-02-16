@@ -7,8 +7,11 @@ class ObserverAuthButton extends StatefulWidget {
     required this.onSuccess,
     required this.onFailure,
     required this.onUserInfosDetected,
+    required this.buttonType,
     super.key,
     this.isDevMode = false,
+    this.text = 'Se connecter',
+    this.icon = Icons.login,
   });
 
   /// [Input]:
@@ -43,7 +46,7 @@ class ObserverAuthButton extends StatefulWidget {
   ///     "scope": "string"
   /// }
   /// ```
-  final ValueChanged<ObserverTokenResponse> onSuccess;
+  final ValueChanged<ObserverSessionDTO> onSuccess;
 
   /// Tout les [ObserverAuthFailure] sont :
   /// - [SignInFailure]
@@ -72,8 +75,13 @@ class ObserverAuthButton extends StatefulWidget {
   /// ```
   final ValueChanged<UserInfosDTO> onUserInfosDetected;
 
+  final ObserverButtonEnum buttonType;
+
   /// Pour passer de l'API local à l'API en ligne.
   final bool isDevMode;
+
+  final String text;
+  final IconData icon;
 
   @override
   State<ObserverAuthButton> createState() => _ObserverAuthButtonState();
@@ -82,49 +90,55 @@ class ObserverAuthButton extends StatefulWidget {
 class _ObserverAuthButtonState extends State<ObserverAuthButton> {
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () async {
-        /// Lancement du processus de connexion.
-        final keycloakAuthTypeDTO = await ObserverAuthFeature.instanceOfAuthService.getTokenWithCode(
+    switch (widget.buttonType) {
+      case ObserverButtonEnum.iconButton:
+        return IconButton(onPressed: _onPressed, icon: Icon(widget.icon));
+      case ObserverButtonEnum.textButton:
+        return TextButton(onPressed: _onPressed, child: Text(widget.text));
+      case ObserverButtonEnum.elevatedButton:
+        return ElevatedButton(onPressed: _onPressed, child: Text(widget.text));
+    }
+  }
+
+  Future<void> _onPressed() async {
+    /// Lancement du processus de connexion.
+    final keycloakAuthTypeDTO = await ObserverAuthFeature.instanceOfAuthService.getTokenWithCode(
+      keycloakConfDTO: widget.keycloakConfDTO,
+    );
+
+    /// Récupération du résultat.
+    keycloakAuthTypeDTO.fold(
+      (ObserverAuthFailure failure) => widget.onFailure(failure),
+      (KeycloakAuthTypeDTO keycloakType) async {
+        /// Transformation du "code" en access token.
+        final datas = await ObserverAuthFeature.instanceOfAuthService.exchangeCode(
+          keycloakAuthTypeDTO: keycloakType,
           keycloakConfDTO: widget.keycloakConfDTO,
+          isDevMode: widget.isDevMode,
         );
 
         /// Récupération du résultat.
-        keycloakAuthTypeDTO.fold(
+        datas.fold(
           (ObserverAuthFailure failure) => widget.onFailure(failure),
-          (KeycloakAuthTypeDTO keycloakType) async {
-            /// Transformation du "code" en access token.
-            final datas = await ObserverAuthFeature.instanceOfAuthService.exchangeCode(
-              keycloakAuthTypeDTO: keycloakType,
-              keycloakConfDTO: widget.keycloakConfDTO,
-              isDevMode: widget.isDevMode,
-            );
+          (ObserverSessionDTO response) async {
+            /// Récupération des infos utilisateurs.
+            // final userInfos = await ObserverAuthFeature.instanceOfAuthService.getUserInfos(
+            //   keycloakConfDTO: widget.keycloakConfDTO,
+            //   accessToken: response.accessToken,
+            //   isDevMode: widget.isDevMode,
+            // );
+            // print('Les infos user $userInfos');
 
             /// Récupération du résultat.
-            datas.fold(
-              (ObserverAuthFailure failure) => widget.onFailure(failure),
-              (ObserverTokenResponse response) async {
-                /// Récupération des infos utilisateurs.
-                final userInfos = await ObserverAuthFeature.instanceOfAuthService.getUserInfos(
-                  keycloakConfDTO: widget.keycloakConfDTO,
-                  accessToken: response.accessToken,
-                  isDevMode: widget.isDevMode,
-                );
+            // userInfos.fold(
+            //   (ObserverAuthFailure failure) => widget.onFailure(failure),
+            //   (UserInfosDTO userInfos) => widget.onUserInfosDetected(userInfos),
+            // );
 
-                /// Récupération du résultat.
-                userInfos.fold(
-                  (ObserverAuthFailure failure) => widget.onFailure(failure),
-                  (UserInfosDTO userInfos) => widget.onUserInfosDetected(userInfos),
-                );
-
-                return widget.onSuccess(response);
-              },
-            );
+            return widget.onSuccess(response);
           },
         );
       },
-      // icon: const Icon(Icons.login),
-      child: const Text('Se connecter'),
     );
   }
 }
