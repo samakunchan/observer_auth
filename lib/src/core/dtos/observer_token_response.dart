@@ -17,7 +17,7 @@ part 'observer_token_response.g.dart';
 /// }
 /// ```
 @freezed
-class ObserverTokenResponse with _$ObserverTokenResponse {
+abstract class ObserverTokenResponse with _$ObserverTokenResponse {
   const factory ObserverTokenResponse({
     @JsonKey(name: 'access_token') required String accessToken,
     @JsonKey(name: 'refresh_token') required String refreshToken,
