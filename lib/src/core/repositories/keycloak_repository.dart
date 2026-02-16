@@ -55,6 +55,8 @@ class KeycloakRepository {
         ),
       );
 
+      // Peut que sans le scope "offline_acess" il n'est pas nécessaire de faire le code ci-dessous.
+      // ... a tester.
       if (result != null) {
         final Uri uri = !isDevMode
             ? Uri.parse('${keycloakConfDTO.issuer}/authentication/revoke-token')
