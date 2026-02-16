@@ -1,5 +1,26 @@
 # OBSERVER AUTH
 
+## 🚀 0.9.0 - 16/02/2026
+### Nouveautés
+
+- Ajout d'un nouveau DTO qui retournerait le user et ses tokens.
+- Ajout d'un enum pour les différents états du token.
+- Ajout d'un enum pour les différents style de bouton.
+
+### Changements
+
+- Mise à jours minimum de librairies.
+- Tout les models freezed sont passés en abstract suite à la mise à jour de la librairie.
+- Mise à jour du retour de reponse [ObserverSessionDTO].
+- Ajout d'une méthode pour check la validité du token.
+- Ajout d'un léger début de customisation des boutons.
+
+### Correctifs
+
+- Fix du sign qui ne fonctionnait plus en utilisant la propriété `discovery_url`.
+
+
+
 ## 🚀 0.8.0 - 11/10/2024
 ### Nouveautés
 
