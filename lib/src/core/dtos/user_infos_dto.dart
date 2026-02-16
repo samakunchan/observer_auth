@@ -17,10 +17,9 @@ part 'user_infos_dto.g.dart';
 /// }
 /// ```
 @freezed
-class UserInfosDTO with _$UserInfosDTO {
+abstract class UserInfosDTO with _$UserInfosDTO {
   const factory UserInfosDTO({
     @JsonKey(name: 'sub') required String sub,
-    @JsonKey(name: 'siren') required String siren,
     @JsonKey(name: 'email_verified') required bool emailVerified,
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'preferred_username') required String preferredUsername,
@@ -28,6 +27,7 @@ class UserInfosDTO with _$UserInfosDTO {
     @JsonKey(name: 'given_name') required String givenName,
     @JsonKey(name: 'family_name') required String familyName,
     @JsonKey(name: 'email') required String email,
+    @JsonKey(name: 'siren') String? siren,
   }) = _UserInfosDTO;
 
   factory UserInfosDTO.fromJson(Map<String, dynamic> json) => _$UserInfosDTOFromJson(json);

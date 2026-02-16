@@ -1,5 +1,26 @@
 # OBSERVER AUTH
 
+## 🚀 0.9.0 - 16/02/2026
+### Nouveautés
+
+- Ajout d'un nouveau DTO qui retournerait le user et ses tokens.
+- Ajout d'un enum pour les différents états du token.
+- Ajout d'un enum pour les différents style de bouton.
+
+### Changements
+
+- Mise à jours minimum de librairies.
+- Tout les models freezed sont passés en abstract suite à la mise à jour de la librairie.
+- Mise à jour du retour de reponse [ObserverSessionDTO].
+- Ajout d'une méthode pour check la validité du token.
+- Ajout d'un léger début de customisation des boutons.
+
+### Correctifs
+
+- Fix du sign qui ne fonctionnait plus en utilisant la propriété `discovery_url`.
+
+
+
 ## 🚀 0.8.0 - 11/10/2024
 ### Nouveautés
 
@@ -15,7 +36,7 @@
 - Pas de fixes.
 
 
-## 🚀 0.7.2 - 17/09/2024
+## 🔨 0.7.2 - 17/09/2024
 ### Nouveautés
 
 - Pas de nouveautés.
@@ -30,7 +51,7 @@
 - Ajout d'une dépendance `frontend_server_client` habituellement inutile, mais nécessaire ici.
 
  
-## 🚀 0.7.1 - 17/09/2024
+## 🔨 0.7.1 - 17/09/2024
 ### Nouveautés
 
 - Pas de nouveautés.
@@ -79,7 +100,7 @@
 - Fix: typo de version dans le changelog.
 
 
-## 🚀 0.5.2 - 08/08/2024
+## 🔨 0.5.2 - 08/08/2024
 ### Nouveautés
 
 - Pas de nouveautés
@@ -92,7 +113,7 @@
 
 - Fix: Nom du tag. `observer_auth_vXXX` au lieu de `observer_core_vXXX`
 
-## 🚀 0.5.1 - 08/08/2024
+## 🔨 0.5.1 - 08/08/2024
 ### Nouveautés
 
 - Pas de nouveautés

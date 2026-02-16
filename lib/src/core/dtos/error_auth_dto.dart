@@ -4,7 +4,7 @@ part 'error_auth_dto.freezed.dart';
 part 'error_auth_dto.g.dart';
 
 @freezed
-class ErrorAuthDTO with _$ErrorAuthDTO {
+abstract class ErrorAuthDTO with _$ErrorAuthDTO {
   /// ```dart
   /// {
   ///     "statusCode": 400,

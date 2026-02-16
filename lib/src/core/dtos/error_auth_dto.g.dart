@@ -6,16 +6,16 @@ part of 'error_auth_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ErrorAuthDTOImpl _$$ErrorAuthDTOImplFromJson(Map<String, dynamic> json) =>
-    _$ErrorAuthDTOImpl(
-      statusCode: json['statusCode'] as int,
+_ErrorAuthDTO _$ErrorAuthDTOFromJson(Map<String, dynamic> json) =>
+    _ErrorAuthDTO(
+      statusCode: (json['statusCode'] as num).toInt(),
       errorName: json['errorName'] as String,
       description: json['description'] as String,
       path: json['path'] as String,
       date: json['date'] as String,
     );
 
-Map<String, dynamic> _$$ErrorAuthDTOImplToJson(_$ErrorAuthDTOImpl instance) =>
+Map<String, dynamic> _$ErrorAuthDTOToJson(_ErrorAuthDTO instance) =>
     <String, dynamic>{
       'statusCode': instance.statusCode,
       'errorName': instance.errorName,

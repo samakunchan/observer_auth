@@ -18,7 +18,7 @@ part 'keycloak_conf_dto.g.dart';
 /// }
 /// ```
 @freezed
-class KeycloakConfDTO with _$KeycloakConfDTO {
+abstract class KeycloakConfDTO with _$KeycloakConfDTO {
   const factory KeycloakConfDTO({
     @JsonKey(name: 'client_id') required String clientId,
     @JsonKey(name: 'redirect_uri') required String redirectUri,
@@ -27,6 +27,12 @@ class KeycloakConfDTO with _$KeycloakConfDTO {
     @Default('https://secure-connect.devpapangue.com/realms/ppg-connect/.well-known/openid-configuration')
     String discoveryUrl,
     @JsonKey(name: 'issuer') @Default('https://secure-connect.devpapangue.com') String issuer,
+    @JsonKey(name: 'authorization_endpoint')
+    @Default('https://secure-connect.devpapangue.com/realms/ppg-connect/protocol/openid-connect/auth')
+    String authorizationEndpoint,
+    @JsonKey(name: 'token_endpoint')
+    @Default('https://secure-connect.devpapangue.com/realms/ppg-connect/protocol/openid-connect/token')
+    String tokenEndpoint,
     @JsonKey(name: 'code_verifier') String? codeVerifier,
     @JsonKey(name: 'authorization_code') String? authorizationCode,
     @JsonKey(name: 'refresh_token') String? refreshToken,

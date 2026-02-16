@@ -18,7 +18,8 @@ class ObserverAuthService {
   Future<Either<ObserverAuthFailure, KeycloakAuthTypeDTO>> getTokenWithCode({required KeycloakConfDTO keycloakConfDTO}) async {
     return BaseRepository.makeRequest(
       () async {
-        final AuthorizationResponse response = await ObserverAuthFeature.instanceOfAuthRepository.signIn(
+        final AuthorizationResponse response =
+            await ObserverAuthFeature.instanceOfAuthRepository.signIn(
               keycloakConfDTO: keycloakConfDTO,
             ) ??
             const AuthorizationResponse();
@@ -48,7 +49,7 @@ class ObserverAuthService {
   ///     "scope": "string"
   /// }
   /// ```
-  Future<Either<ObserverAuthFailure, ObserverTokenResponse>> exchangeCode({
+  Future<Either<ObserverAuthFailure, ObserverSessionDTO>> exchangeCode({
     required KeycloakConfDTO keycloakConfDTO,
     required KeycloakAuthTypeDTO keycloakAuthTypeDTO,
     required bool isDevMode,
@@ -131,14 +132,14 @@ class ObserverAuthService {
   ///     "scope": "string"
   /// }
   /// ```
-  static Future<void> refreshToken({
+  Future<void> refreshToken({
     required String refreshToken,
     required String issuer,
     required ValueChanged<ObserverAuthFailure> onFailure,
-    required ValueChanged<ObserverTokenResponse> onSuccess,
+    required ValueChanged<ObserverSessionDTO> onSuccess,
     bool isDevMode = false,
   }) async {
-    final Either<ObserverAuthFailure, ObserverTokenResponse> request = await BaseRepository.makeRequest(
+    final Either<ObserverAuthFailure, ObserverSessionDTO> request = await BaseRepository.makeRequest(
       () async {
         return ObserverAuthFeature.instanceOfAuthRepository.refreshToken(
           refreshToken: refreshToken,
@@ -149,7 +150,26 @@ class ObserverAuthService {
     );
     request.fold(
       (ObserverAuthFailure failure) => onFailure(failure),
-      (ObserverTokenResponse response) => onSuccess(response),
+      (ObserverSessionDTO response) => onSuccess(response),
+    );
+  }
+
+  Future<void> verifyTokenValidity({
+    required KeycloakConfDTO keycloakConfDTO,
+    required ValueChanged<ObserverAuthFailure> onFailure,
+    required ValueChanged<TokenValidityStatusEnum> onSuccess,
+    bool isDevMode = false,
+  }) async {
+    final Either<ObserverAuthFailure, TokenValidityStatusEnum> request = await BaseRepository.makeRequest(
+      () async {
+        return ObserverAuthFeature.instanceOfAuthRepository.verifyTokenValidity(
+          keycloakConfDTO: keycloakConfDTO,
+        );
+      },
+    );
+    return request.fold(
+      (ObserverAuthFailure failure) => onFailure(failure),
+      (TokenValidityStatusEnum response) => onSuccess(response),
     );
   }
 }

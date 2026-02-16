@@ -17,7 +17,7 @@ part 'keycloak_token_dto.g.dart';
 /// }
 /// ```
 @freezed
-class KeycloakTokenDTO with _$KeycloakTokenDTO {
+abstract class KeycloakTokenDTO with _$KeycloakTokenDTO {
   const factory KeycloakTokenDTO({
     @JsonKey(name: 'refresh_token') String? refreshToken,
     @JsonKey(name: 'access_token') String? accessToken,
