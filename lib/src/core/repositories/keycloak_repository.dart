@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:observer_auth/library_observer_auth.dart';
 
 class KeycloakRepository {
@@ -10,15 +11,21 @@ class KeycloakRepository {
 
   Future<AuthorizationResponse?> signIn({required KeycloakConfDTO keycloakConfDTO}) async {
     const FlutterAppAuth appAuth = FlutterAppAuth();
+
     try {
       KeycloakAuthTypeDTO.isBusy = true;
       final AuthorizationResponse? result = await appAuth.authorize(
         AuthorizationRequest(
           keycloakConfDTO.clientId,
           keycloakConfDTO.redirectUri,
-          discoveryUrl: keycloakConfDTO.discoveryUrl,
+          // discoveryUrl: keycloakConfDTO.discoveryUrl,
+          issuer: keycloakConfDTO.issuer,
           scopes: keycloakConfDTO.scopes,
           loginHint: 'samakunchan@gmail.com',
+          serviceConfiguration: AuthorizationServiceConfiguration(
+            authorizationEndpoint: keycloakConfDTO.authorizationEndpoint,
+            tokenEndpoint: keycloakConfDTO.tokenEndpoint,
+          ),
         ),
       );
 
@@ -35,11 +42,9 @@ class KeycloakRepository {
     }
   }
 
-  Future<EndSessionResponse?> signOut({
-    required KeycloakConfDTO keycloakConfDTO,
-    bool isDevMode = false,
-  }) async {
+  Future<EndSessionResponse?> signOut({required KeycloakConfDTO keycloakConfDTO, bool isDevMode = false}) async {
     const FlutterAppAuth appAuth = FlutterAppAuth();
+
     try {
       KeycloakAuthTypeDTO.isBusy = true;
       final EndSessionResponse? result = await appAuth.endSession(
@@ -69,7 +74,7 @@ class KeycloakRepository {
         );
 
         /// On récupère la réponse de l'API
-        final Map<String, dynamic> json = jsonDecode(httpResponse.body) as Map<String, dynamic>;
+        final Map<String, dynamic> _ = jsonDecode(httpResponse.body) as Map<String, dynamic>;
       }
 
       return result;
@@ -94,7 +99,7 @@ class KeycloakRepository {
     return keycloakAuthTypeDTO;
   }
 
-  Future<ObserverTokenResponse> exchangeCode({
+  Future<ObserverSessionDTO> exchangeCode({
     required KeycloakAuthTypeDTO keycloakAuthTypeDTO,
     required KeycloakConfDTO keycloakConfDTO,
     bool isDevMode = false,
@@ -122,7 +127,7 @@ class KeycloakRepository {
       /// On récupère la réponse de l'API
       final Map<String, dynamic> json = jsonDecode(httpResponse.body) as Map<String, dynamic>;
 
-      final ObserverTokenResponse result = ObserverTokenResponse.fromJson(json);
+      final ObserverSessionDTO result = ObserverSessionDTO.fromJson(json);
 
       return result;
     } catch (error) {
@@ -137,14 +142,15 @@ class KeycloakRepository {
     }
   }
 
-  Future<ObserverTokenResponse> refreshToken({
+  Future<ObserverSessionDTO> refreshToken({
     required String refreshToken,
     required String issuer,
     bool isDevMode = false,
   }) async {
     KeycloakAuthTypeDTO.isBusy = true;
-    final Uri uri =
-        !isDevMode ? Uri.parse('$issuer/authentication/credentials') : Uri.parse('http://localhost:3005/authentication/credentials');
+    final Uri uri = !isDevMode
+        ? Uri.parse('$issuer/authentication/credentials')
+        : Uri.parse('http://localhost:3005/authentication/credentials');
 
     try {
       /// On envoie les infos vers l'API
@@ -165,9 +171,12 @@ class KeycloakRepository {
           throw UserInfosRevokedException();
         }
       }
+      if (json.containsKey('error')) {
+        throw UserInfosRevokedException();
+      }
 
       /// On récupère la réponse de l'API
-      final ObserverTokenResponse result = ObserverTokenResponse.fromJson(json);
+      final ObserverSessionDTO result = ObserverSessionDTO.fromJson(json);
 
       return result;
     } catch (error) {
@@ -221,6 +230,21 @@ class KeycloakRepository {
       }
       KeycloakAuthTypeDTO.isBusy = false;
       return throw UserInfosException(message: 'La récupération des données utilisateur a merder. Message : $error');
+    }
+  }
+
+  Future<TokenValidityStatusEnum> verifyTokenValidity({required KeycloakConfDTO keycloakConfDTO}) async {
+    try {
+      if (keycloakConfDTO.refreshToken != null && JwtDecoder.isExpired(keycloakConfDTO.refreshToken!)) {
+        return TokenValidityStatusEnum.kapout;
+      } else {
+        if (keycloakConfDTO.accessToken != null && JwtDecoder.isExpired(keycloakConfDTO.accessToken!)) {
+          return TokenValidityStatusEnum.refreshTokenOkTokenExpired;
+        }
+        return TokenValidityStatusEnum.allGood;
+      }
+    } on Exception catch (error) {
+      return throw UserInfosException(message: 'Le check de la validité du token a merder. Message : $error');
     }
   }
 }
