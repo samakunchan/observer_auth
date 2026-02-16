@@ -15,7 +15,7 @@
 - Pas de fixes.
 
 
-## 🚀 0.7.2 - 17/09/2024
+## 🔨 0.7.2 - 17/09/2024
 ### Nouveautés
 
 - Pas de nouveautés.
@@ -30,7 +30,7 @@
 - Ajout d'une dépendance `frontend_server_client` habituellement inutile, mais nécessaire ici.
 
  
-## 🚀 0.7.1 - 17/09/2024
+## 🔨 0.7.1 - 17/09/2024
 ### Nouveautés
 
 - Pas de nouveautés.
@@ -79,7 +79,7 @@
 - Fix: typo de version dans le changelog.
 
 
-## 🚀 0.5.2 - 08/08/2024
+## 🔨 0.5.2 - 08/08/2024
 ### Nouveautés
 
 - Pas de nouveautés
@@ -92,7 +92,7 @@
 
 - Fix: Nom du tag. `observer_auth_vXXX` au lieu de `observer_core_vXXX`
 
-## 🚀 0.5.1 - 08/08/2024
+## 🔨 0.5.1 - 08/08/2024
 ### Nouveautés
 
 - Pas de nouveautés
